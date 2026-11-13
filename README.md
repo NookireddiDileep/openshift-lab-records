@@ -34,6 +34,7 @@ commands, evidence, and lessons learned.
 | [OCP-019](stories/OCP-019-static-pv-pvc-nfs.md) | Static 1Gi NFS PV + PVC bound to a Pod | Storage · Static provisioning | Done |
 | [OCP-020](stories/OCP-020-dynamic-storage-etherpad.md) | Allocate 1Gi dynamic storage to an app – Etherpad data now survives restarts | Storage · Dynamic provisioning | Done |
 | [OCP-021](stories/OCP-021-message-survives-restarts.md) | Required message survives Pod deletes/restarts – ConfigMap (+ RCA-004) | ConfigMaps · SCC | Done |
+| [OCP-022](stories/OCP-022-statefulset-3-replicas.md) | StatefulSet, 3 replicas, 1Gi RWO PVC each (default StorageClass) | StatefulSets · Storage | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
