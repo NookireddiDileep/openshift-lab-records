@@ -21,11 +21,12 @@ commands, evidence, and lessons learned.
 | [OCP-006](stories/OCP-006-exec-without-login.md) | Get /etc/passwd without logging in – CRI-O and the random UID | Troubleshooting · Runtime | Done |
 | [OCP-007](stories/OCP-007-own-image-openshift-build.md) | Build my own image in OpenShift and deploy it (app-04) | Builds · ImageStreams | Done |
 | [OCP-008](stories/OCP-008-imagestream-trigger-and-route.md) | Rebuild → automatic redeploy (ImageStream trigger) + Route | Builds · Rollouts · Routes | Done |
+| [OCP-009](stories/OCP-009-copy-images-to-registry.md) | Copy images into my registry (mirror, skopeo, import-image) | Registries · Mirroring | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
 |---|---|---|---|
-| – | _first RCA goes here_ | | |
+| [RCA-001](rca/RCA-001-rootless-podman-subuid.md) | Rootless `podman pull` fails – no subuid/subgid ranges | Sev4 | Single UID/GID user-namespace mapping can't unpack files owned by other IDs |
 
 ## Structure
 ```
