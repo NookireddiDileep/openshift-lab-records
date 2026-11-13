@@ -110,7 +110,7 @@ REVISION  CHANGE-CAUSE
 2         <none>
 3         v1.1: updated page
 4         rebuild of v1.1 (no content change) - build app-04-3
-5         rebuild of v1.1 (no content change) - build app-04-4
+5         rebuild of v1.1 (no content change) - build app-04-4, tested build->status->annotate order
 
 $ oc exec deploy/app-04 -- curl -s localhost:8080 | grep Version
   <p>Version: 1.1</p>                                  ← same content, two extra rollouts
