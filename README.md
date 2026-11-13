@@ -18,6 +18,7 @@ commands, evidence, and lessons learned.
 | [OCP-003](stories/OCP-003-scale-deployment.md) | Scale app-02 from 1 to 2 (declarative) + drift demo | Scaling · GitOps practices | Done |
 | [OCP-004](stories/OCP-004-third-party-image-etherpad.md) | Deploy a third-party image (Etherpad) under restricted-v2 | Image assessment · Security | Done |
 | [OCP-005](stories/OCP-005-container-os-vs-node-kernel.md) | Log in to app-03, check OS – container userland vs node kernel | Troubleshooting · Fundamentals | Done |
+| [OCP-006](stories/OCP-006-exec-without-login.md) | Get /etc/passwd without logging in – CRI-O and the random UID | Troubleshooting · Runtime | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
