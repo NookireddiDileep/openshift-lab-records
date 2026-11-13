@@ -1,0 +1,13 @@
+# Proposed fix (not yet applied): only mark MySQL Ready when it answers on 3306
+spec:
+  template:
+    spec:
+      containers:
+      - name: mysql
+        readinessProbe:
+          exec:
+            command: ["bash", "-c", "mysqladmin ping -h 127.0.0.1 -u\"$MYSQL_USER\" -p\"$MYSQL_PASSWORD\" --silent"]
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 6
+# apply: oc patch deployment/mysql-db --patch-file readiness-probe-patch.yaml

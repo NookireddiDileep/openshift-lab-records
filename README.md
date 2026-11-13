@@ -23,11 +23,13 @@ commands, evidence, and lessons learned.
 | [OCP-008](stories/OCP-008-imagestream-trigger-and-route.md) | Rebuild → automatic redeploy (ImageStream trigger) + Route | Builds · Rollouts · Routes | Done |
 | [OCP-009](stories/OCP-009-copy-images-to-registry.md) | Copy images into my registry (mirror, skopeo, import-image) | Registries · Mirroring | Done |
 | [OCP-010](stories/OCP-010-podman-build-push-internal-registry.md) | podman build → push to internal registry → deploy (new-app vs create deployment) | Image build · Registry | Done |
+| [OCP-011](stories/OCP-011-mysql-database-from-docker-image.md) | MySQL from a Docker image – Secret, SQL proof, durability test | Stateful apps · Secrets | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
 |---|---|---|---|
 | [RCA-001](rca/RCA-001-rootless-podman-subuid.md) | Rootless `podman pull` fails – no subuid/subgid ranges | Sev4 | Single UID/GID user-namespace mapping can't unpack files owned by other IDs |
+| [RCA-002](rca/RCA-002-mysql-data-loss-no-persistent-storage.md) | MySQL data lost after Pod replacement | Sev2 (simulated) | Data dir on the container's ephemeral overlay layer – no volume mounted |
 
 ## Structure
 ```
