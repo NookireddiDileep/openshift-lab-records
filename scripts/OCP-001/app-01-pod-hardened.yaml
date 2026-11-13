@@ -1,0 +1,25 @@
+# OCP-001 – v2: same bare Pod, hardened to satisfy Pod Security "restricted" explicitly
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-01
+  labels:
+    app: app-01
+spec:
+  securityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: app-01
+    image: registry.access.redhat.com/ubi9/httpd-24
+    ports:
+    - containerPort: 8080
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+    resources:
+      requests: { cpu: 50m, memory: 64Mi }
+      limits:   { cpu: 200m, memory: 128Mi }
+  restartPolicy: Always

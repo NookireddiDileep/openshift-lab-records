@@ -13,7 +13,7 @@ commands, evidence, and lessons learned.
 ### Stories (planned work)
 | ID | Title | Area | Status |
 |---|---|---|---|
-| – | _first story goes here_ | | |
+| [OCP-001](stories/OCP-001-bare-pod-no-self-heal.md) | Deploy app-01 as a bare Pod (no self-healing) | Workloads · Security | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
