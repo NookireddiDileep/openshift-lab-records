@@ -29,6 +29,7 @@ commands, evidence, and lessons learned.
 | [OCP-014](stories/OCP-014-daemonset-deployment.md) | Application deployment using a DaemonSet – one Pod per node | DaemonSets · Scheduling | Done |
 | [OCP-015](stories/OCP-015-fix-app-unreachable-via-route.md) | Fix app unreachable over its Route URL (shared cluster) → RCA-003 | Routes · Troubleshooting | Done |
 | [OCP-016](stories/OCP-016-ingress-default-controller.md) | Create and access an app through Ingress (default ingress controller) | Networking · Ingress | Done |
+| [OCP-017](stories/OCP-017-blue-green-deployment.md) | Blue-Green deployment – Route switch, zero errors, instant rollback | Release strategies · Routes | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
