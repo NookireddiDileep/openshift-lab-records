@@ -135,6 +135,6 @@ dirty.db: 0 bytes at start → 348 bytes after the first request
 > "Before deploying a third-party Etherpad image I inspected it with `oc image info` – a named user, a writable working directory and a five-year-old Node 10 base – so I expected permission errors under OpenShift's random UID. It actually ran under `restricted-v2`, and I proved why: the directories were owned by group 0 and group-writable, and the random UID always runs with GID 0. I also flagged production risks: data stored in a DirtyDB file inside the container, so every restart loses it, plus an outdated, unpatched image on the `latest` tag – the fixes being a PVC or external database, secrets for credentials, and a rebuilt, pinned image."
 
 ## Follow-ups
-- [ ] Persist Etherpad data with a PVC and prove it survives a Pod deletion
-- [ ] Expose app-03 with a Service and Route
+- [x] Persist Etherpad data with a PVC and prove it survives a Pod deletion → **done in [OCP-020](OCP-020-dynamic-storage-etherpad.md)**
+- [x] Expose app-03 with a Service and Route → done in [OCP-020](OCP-020-dynamic-storage-etherpad.md)
 - [ ] Add readiness/liveness probes on port 9001
