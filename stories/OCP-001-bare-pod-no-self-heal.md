@@ -7,7 +7,7 @@
 | **Priority** | Medium |
 | **Date** | 2026-11-13 |
 | **Time spent** | ~30 min |
-| **Status** | Done (hardening follow-up open) |
+| **Status** | Done |
 
 ## 1. User story / requirement
 > As an **application team**, I want **my first application `app-01` deployed from a Pod definition in my own namespace**, so that **I understand the most basic workload unit — and confirm that, if it is deleted, the platform does _not_ recreate it automatically**.
@@ -17,6 +17,7 @@
 - [x] The Pod reaches `Running` and the application responds
 - [x] The Pod has **no controller** (no `ownerReferences`)
 - [x] After deleting the Pod, it is **not** recreated (no self-healing)
+- [x] *(extra)* Hardened manifest passes Pod Security `restricted` with no warnings
 
 ## 3. Background / concepts
 | | Bare Pod (this story) | Deployment |
@@ -101,12 +102,35 @@ Normal   Started   pod/app-01   Started container app-01
 Normal   Killing   pod/app-01   Stopping container app-01
 ```
 
+### 6b. Hardened Pod – validation
+```bash
+$ oc get ns my-apps --show-labels
+... pod-security.kubernetes.io/audit=restricted, pod-security.kubernetes.io/warn=restricted   # no "enforce" label
+
+$ oc auth can-i use scc/anyuid --as=system:serviceaccount:my-apps:default -n my-apps
+no
+
+$ oc apply -f app-01-pod-hardened.yaml --dry-run=server
+pod/app-01 created (server dry run)          # no PodSecurity warning
+$ oc apply -f app-01-pod-hardened.yaml
+pod/app-01 created
+$ oc get pod app-01
+NAME     READY   STATUS    RESTARTS   AGE
+app-01   1/1     Running   0          20s
+$ oc get pod app-01 -o jsonpath='{.metadata.ownerReferences}'
+                                             # empty → no controller owns it
+$ oc get pod app-01 -o jsonpath='{.metadata.annotations.openshift\.io/scc}'
+restricted-v2
+$ oc delete pod app-01
+pod "app-01" deleted
+```
+
 ## 7. Issues hit & observations
 | # | Observation | Cause | Action |
 |---|---|---|---|
 | 1 | `oc new-project` → `AlreadyExists` | Command re-run after the project had already been created | None – `oc project -q` confirmed I was in the right project |
-| 2 | **Pod Security warnings** on apply: `allowPrivilegeEscalation != false`, `unrestricted capabilities`, `runAsNonRoot != true`, `seccompProfile` not set | Namespace enforces/warns at Pod Security level `restricted`; my manifest didn't declare a `securityContext` | Hardened manifest written: [`app-01-pod-hardened.yaml`](../scripts/OCP-001/app-01-pod-hardened.yaml) – follow-up to validate |
-| 3 | Pod admitted with **SCC `anyuid`** instead of the default `restricted-v2` | On this shared lab, my user/service account can use `anyuid`; SCC admission picks the highest-priority SCC the requester can use, and `anyuid` (priority 10) wins over `restricted-v2` | Follow-up: confirm who is granted `anyuid` (`oc adm policy who-can use scc anyuid`). In production, `anyuid` should only be granted to a dedicated service account that needs it |
+| 2 | **Pod Security warnings** on apply: `allowPrivilegeEscalation != false`, `unrestricted capabilities`, `runAsNonRoot != true`, `seccompProfile` not set | Namespace labels are `warn=restricted` and `audit=restricted` with **no `enforce` label** – violations are warned and audited, not blocked. My manifest didn't declare a `securityContext` | Hardened manifest [`app-01-pod-hardened.yaml`](../scripts/OCP-001/app-01-pod-hardened.yaml) – **validated: no warnings, admitted under `restricted-v2`** (see §6b) |
+| 3 | First Pod admitted with **SCC `anyuid`**; the hardened Pod got **`restricted-v2`** | `anyuid` is broadly available on this shared lab (via RBAC to the `default` SA of many tenant projects and to admin groups). My own project's `default` SA **cannot** use it (`oc auth can-i ... → no`), so the first Pod got `anyuid` through the **requesting user's** permissions – a bare Pod is created by the user directly, so the user's SCC access counts. Once the spec was already restricted-compliant, `restricted-v2` admitted it | Lesson: SCC selection depends on **who creates the Pod** (user vs. controller's service account) and on the Pod spec. In production, grant `anyuid` only to a dedicated SA, never broadly |
 | 4 | Pod scheduled on a **control-plane node** (`master-0`) | Lab is a compact cluster where control-plane nodes are also schedulable workers | None for lab; in production keep app workloads off control-plane nodes |
 
 ## 8. Production considerations
@@ -119,6 +143,8 @@ Normal   Killing   pod/app-01   Stopping container app-01
 - *Container restart* (kubelet, `restartPolicy`) and *Pod self-healing* (controllers) are different mechanisms.
 - Server-side dry run (`--dry-run=server`) surfaces admission warnings before anything is created.
 - The `openshift.io/scc` annotation shows which SCC actually admitted a Pod – worth checking on every new workload.
+- Pod Security labels without `enforce` only **warn/audit** – a cluster can look compliant while running non-compliant Pods.
+- For a bare Pod the **creating user's** SCC access matters; for a Deployment the Pods are created by a controller, so only the **service account's** SCC access matters – the same YAML can land on different SCCs.
 
 ## 10. Interview talking point
-> "I deployed an app as a bare Pod and showed that deleting it removes it permanently, because no controller owns it – unlike a Deployment, where the ReplicaSet recreates it. While doing it I noticed the Pod was admitted under the `anyuid` SCC and triggered Pod Security `restricted` warnings, so I hardened the manifest with an explicit `securityContext` – `runAsNonRoot`, dropped capabilities, no privilege escalation and the `RuntimeDefault` seccomp profile – so it's secure regardless of which SCC admits it."
+> "I deployed an app as a bare Pod and showed that deleting it removes it permanently, because no controller owns it – unlike a Deployment, where the ReplicaSet recreates it. While doing it I noticed the Pod was admitted under the `anyuid` SCC and triggered Pod Security `restricted` warnings, so I hardened the manifest with an explicit `securityContext` – `runAsNonRoot`, dropped capabilities, no privilege escalation and the `RuntimeDefault` seccomp profile. The warnings disappeared and the Pod was admitted under `restricted-v2`. I also found the namespace only warned and audited Pod Security – it didn't enforce – which is worth checking on any shared cluster."
