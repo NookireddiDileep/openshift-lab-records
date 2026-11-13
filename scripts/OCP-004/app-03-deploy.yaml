@@ -1,0 +1,35 @@
+# OCP-004 – Etherpad (third-party image) as a Deployment, restricted-v2 compatible
+# Image: a training build of etherpad-lite 1.8.7 whose directories are owned by GID 0 and
+# group-writable (OpenShift-friendly). Replace <registry>/etherpad:<tag> with your image.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-03
+  labels:
+    app: app-03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-03
+  template:
+    metadata:
+      labels:
+        app: app-03
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: app-03
+        image: <registry>/etherpad:<tag>
+        ports:
+        - containerPort: 9001
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+        resources:
+          requests: { cpu: 100m, memory: 256Mi }
+          limits:   { cpu: 500m, memory: 512Mi }
