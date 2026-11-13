@@ -1,0 +1,23 @@
+# OCP-016 – standard Kubernetes Ingress on OpenShift (default ingress controller)
+# Replace <namespace> and <apps-domain> (oc get ingresses.config/cluster -o jsonpath='{.spec.domain}')
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-04-ingress
+  labels:
+    app: app-04
+  # annotations:
+  #   route.openshift.io/termination: edge     # ask the generated Route for edge TLS
+spec:
+  ingressClassName: openshift-default
+  rules:
+  - host: app04-ingress-<namespace>.<apps-domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app-04
+            port:
+              number: 8080
