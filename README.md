@@ -15,6 +15,7 @@ commands, evidence, and lessons learned.
 |---|---|---|---|
 | [OCP-001](stories/OCP-001-bare-pod-no-self-heal.md) | Deploy app-01 as a bare Pod (no self-healing) | Workloads · Security | Done |
 | [OCP-002](stories/OCP-002-deployment-self-heal.md) | Deploy app-02 as a Deployment (self-healing) | Workloads · Deployments | Done |
+| [OCP-003](stories/OCP-003-scale-deployment.md) | Scale app-02 from 1 to 2 (declarative) + drift demo | Scaling · GitOps practices | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
