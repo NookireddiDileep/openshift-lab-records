@@ -8,6 +8,7 @@
 | **Component** | Route · Service · Endpoints |
 | **Status** | **Resolved** – verified with curl and in a browser |
 | **Time to detect / resolve** | n/a (reported) / ~10 min triage + ~2 min fix |
+| **Story** | [OCP-015](../stories/OCP-015-fix-app-unreachable-via-route.md) |
 | **Source** | Trainer story 08: "Unable to access the application over the route URL – check and fix" |
 
 ## 1. Problem statement
