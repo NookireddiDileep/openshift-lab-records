@@ -33,6 +33,7 @@ commands, evidence, and lessons learned.
 |---|---|---|---|
 | [RCA-001](rca/RCA-001-rootless-podman-subuid.md) | Rootless `podman pull` fails – no subuid/subgid ranges | Sev4 | Single UID/GID user-namespace mapping can't unpack files owned by other IDs |
 | [RCA-002](rca/RCA-002-mysql-data-loss-no-persistent-storage.md) | MySQL data lost after Pod replacement | Sev2 (simulated) | Data dir on the container's ephemeral overlay layer – no volume mounted |
+| [RCA-003](rca/RCA-003-route-unreachable-three-faults.md) | App unreachable via Route – three config faults | Sev2 | Route host typo + Route→wrong Service name + Service selector ≠ Pod labels |
 
 ## Structure
 ```
