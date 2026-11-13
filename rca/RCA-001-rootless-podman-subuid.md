@@ -110,3 +110,23 @@ podman info --format '{{.Host.IDMappings.UIDMap}}'   # expect a second entry of 
 
 ## 10. Interview talking point
 > "On a lab bastion, `podman pull` failed with `lchown /etc/shadow: invalid argument`. The blobs had downloaded, so it wasn't network or auth – it was local unpacking. `podman info` showed a single UID/GID mapping and `/etc/subuid` had no entry for my user, so rootless podman couldn't represent GID 42 that `/etc/shadow` needed. I worked around it without root by copying registry-to-registry with skopeo – which never unpacks layers – and documented the permanent fix: assign subordinate ID ranges with `usermod --add-subuids/--add-subgids` and run `podman system migrate`."
+
+## 11. Recurrence – also blocks `podman build` (OCP-010)
+On 2026-11-13 the same root cause stopped a **build**, not just a pull:
+```
+STEP 1/7: FROM docker.io/library/busybox:1.36
+Error: creating build container: ... unpacking failed ... potentially insufficient UIDs or GIDs available in
+user namespace (requested 65534:65534 for /home) ... lchown /home: invalid argument
+```
+Even busybox has a non-root-owned path (`/home` → `nobody`, 65534), so practically every base image is affected.
+
+**Second workaround (no root needed):** the rootless storage option `ignore_chown_errors`
+```bash
+podman --storage-opt ignore_chown_errors=true build -t <image> .
+podman --storage-opt ignore_chown_errors=true push <image>
+```
+It drops ownership that can't be mapped (files become owned by the single mapped user) – fine for images that don't rely on file ownership, **not** for ones that do. In this case the running container still showed `/home` as `nobody:nobody`, most likely because the unchanged base layer was pushed as its original blob. The permanent fix in §7 (subordinate ID ranges) remains the real solution.
+
+| Additional preventive action | Type | Status |
+|---|---|---|
+| Don't build on shared bastions; use CI / a build host with subuid/subgid | Prevent | Proposed |

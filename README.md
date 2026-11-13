@@ -22,6 +22,7 @@ commands, evidence, and lessons learned.
 | [OCP-007](stories/OCP-007-own-image-openshift-build.md) | Build my own image in OpenShift and deploy it (app-04) | Builds · ImageStreams | Done |
 | [OCP-008](stories/OCP-008-imagestream-trigger-and-route.md) | Rebuild → automatic redeploy (ImageStream trigger) + Route | Builds · Rollouts · Routes | Done |
 | [OCP-009](stories/OCP-009-copy-images-to-registry.md) | Copy images into my registry (mirror, skopeo, import-image) | Registries · Mirroring | Done |
+| [OCP-010](stories/OCP-010-podman-build-push-internal-registry.md) | podman build → push to internal registry → deploy (new-app vs create deployment) | Image build · Registry | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
