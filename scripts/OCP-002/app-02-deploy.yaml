@@ -1,0 +1,33 @@
+# OCP-002 – Deployment with a restricted-compliant securityContext (self-healing)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-02
+  labels:
+    app: app-02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-02
+  template:
+    metadata:
+      labels:
+        app: app-02
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: app-02
+        image: registry.access.redhat.com/ubi9/httpd-24
+        ports:
+        - containerPort: 8080
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+        resources:
+          requests: { cpu: 50m, memory: 64Mi }
+          limits:   { cpu: 200m, memory: 128Mi }

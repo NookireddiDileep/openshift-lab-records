@@ -14,6 +14,7 @@ commands, evidence, and lessons learned.
 | ID | Title | Area | Status |
 |---|---|---|---|
 | [OCP-001](stories/OCP-001-bare-pod-no-self-heal.md) | Deploy app-01 as a bare Pod (no self-healing) | Workloads · Security | Done |
+| [OCP-002](stories/OCP-002-deployment-self-heal.md) | Deploy app-02 as a Deployment (self-healing) | Workloads · Deployments | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
