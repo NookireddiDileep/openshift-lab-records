@@ -20,6 +20,7 @@ commands, evidence, and lessons learned.
 | [OCP-005](stories/OCP-005-container-os-vs-node-kernel.md) | Log in to app-03, check OS – container userland vs node kernel | Troubleshooting · Fundamentals | Done |
 | [OCP-006](stories/OCP-006-exec-without-login.md) | Get /etc/passwd without logging in – CRI-O and the random UID | Troubleshooting · Runtime | Done |
 | [OCP-007](stories/OCP-007-own-image-openshift-build.md) | Build my own image in OpenShift and deploy it (app-04) | Builds · ImageStreams | Done |
+| [OCP-008](stories/OCP-008-imagestream-trigger-and-route.md) | Rebuild → automatic redeploy (ImageStream trigger) + Route | Builds · Rollouts · Routes | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
