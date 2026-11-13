@@ -6,7 +6,7 @@
 | **Environment** | Lab OpenShift 4.19 cluster, project `my-apps` (sanitised) |
 | **Severity** | Sev2 in production terms (data loss); lab: simulated |
 | **Component** | Deployment `mysql-db` · storage · self-healing |
-| **Status** | Root cause confirmed; fix designed (PVC) – to be implemented |
+| **Status** | Root cause confirmed; **fix validated** (PVC-backed deployment – see §11) |
 | **Time to detect / resolve** | immediate (test) / fix pending |
 | **Related story** | [OCP-011 – MySQL from a Docker image](../stories/OCP-011-mysql-database-from-docker-image.md) |
 
@@ -98,3 +98,20 @@ Verification to perform: write a row → delete the Pod → new Pod logs show **
 
 ## 10. Interview talking point
 > "In a lab I ran MySQL from the Docker image as a plain Deployment and then deliberately deleted the Pod. Self-healing worked – a new Pod came up Running and Ready – but my table was gone. The data directory was on the container's overlay layer because no volume was mounted, so the new Pod initialised an empty database; the logs showed the init server running again. The fix is a PVC on `/var/lib/mysql`, Recreate strategy for the single-writer volume, ideally a StatefulSet or an Operator, plus backups – and I added a write-delete-read durability test to my checklist for any stateful app."
+
+## 11. Fix validated (OCP-012)
+The same durability test was repeated on MySQL deployed from the `mysql-persistent` template, which mounts a **PVC** at the data directory (plus Recreate strategy and probes):
+```
+$ ... -e "INSERT INTO t VALUES (1,'survives a restart?'); SELECT * FROM t;"
+1       survives a restart?
+$ oc delete pod mysql-tpl-1-2zpd6          → new Pod mysql-tpl-1-jz9ms
+$ oc logs <new> | grep "ready for connections"
+... ready for connections ... port: 3306     ← one line only: no port-0 init server, existing data dir reused
+$ ... -e "SELECT * FROM t;"
+1       survives a restart?                  ← data survived
+```
+| Preventive action | Status |
+|---|---|
+| PVC for every stateful workload's data path | **Validated** in [OCP-012](../stories/OCP-012-mysql-from-openshift-template.md) |
+| Durability test in acceptance checklist | **Applied** in OCP-012 |
+
