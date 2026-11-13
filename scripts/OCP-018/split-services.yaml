@@ -1,0 +1,11 @@
+# OCP-018 – two Services for weighted (canary / A-B) traffic splitting on one Route
+# (selectors point at the blue/green Deployments from OCP-017)
+apiVersion: v1
+kind: Service
+metadata: { name: v1-app, labels: { app: split } }
+spec: { selector: { app: bg, version: blue },  ports: [ { port: 8080, targetPort: 8080 } ] }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: v2-app, labels: { app: split } }
+spec: { selector: { app: bg, version: green }, ports: [ { port: 8080, targetPort: 8080 } ] }
