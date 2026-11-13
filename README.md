@@ -33,6 +33,7 @@ commands, evidence, and lessons learned.
 | [OCP-018](stories/OCP-018-traffic-split-canary.md) | Split traffic v1 80% / v2 20% – weighted Route (canary) | Release strategies · Routes | Done |
 | [OCP-019](stories/OCP-019-static-pv-pvc-nfs.md) | Static 1Gi NFS PV + PVC bound to a Pod | Storage · Static provisioning | Done |
 | [OCP-020](stories/OCP-020-dynamic-storage-etherpad.md) | Allocate 1Gi dynamic storage to an app – Etherpad data now survives restarts | Storage · Dynamic provisioning | Done |
+| [OCP-021](stories/OCP-021-message-survives-restarts.md) | Required message survives Pod deletes/restarts – ConfigMap (+ RCA-004) | ConfigMaps · SCC | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
@@ -40,6 +41,7 @@ commands, evidence, and lessons learned.
 | [RCA-001](rca/RCA-001-rootless-podman-subuid.md) | Rootless `podman pull` fails – no subuid/subgid ranges | Sev4 | Single UID/GID user-namespace mapping can't unpack files owned by other IDs |
 | [RCA-002](rca/RCA-002-mysql-data-loss-no-persistent-storage.md) | MySQL data lost after Pod replacement | Sev2 (simulated) | Data dir on the container's ephemeral overlay layer – no volume mounted |
 | [RCA-003](rca/RCA-003-route-unreachable-three-faults.md) | App unreachable via Route – three config faults | Sev2 | Route host typo + Route→wrong Service name + Service selector ≠ Pod labels |
+| [RCA-004](rca/RCA-004-image-tag-and-root-only-httpd.md) | Wrong image tag, then CrashLoopBackOff | Sev3 | Case-sensitive tag `V2.0.0` vs `v2.0.0`; root-only httpd under random-UID restricted-v2 |
 
 ## Structure
 ```
