@@ -94,6 +94,36 @@ $ curl -s http://$(oc get route app-04 -o jsonpath='{.spec.host}') | grep Versio
   <p>Version: 1.1</p>          ← reached from outside the Pod, through the router and Route
 ```
 
+### 6b. Change-cause and the "rebuild with no change" experiment
+Recorded *why* each rollout happened, then rebuilt **twice without changing any source** to see what the trigger does:
+```
+$ oc annotate deployment/app-04 kubernetes.io/change-cause="v1.1: updated page" --overwrite
+$ oc start-build app-04 --from-dir=. --follow        # build app-04-3, index.html unchanged (still 1.1)
+Successfully pushed .../app-04@sha256:a6554595…        ← new digest anyway → rollout
+$ oc start-build app-04 --from-dir=. --follow        # build app-04-4, still unchanged
+Successfully pushed .../app-04@sha256:af72764b…        ← new digest again → rollout
+deployment "app-04" successfully rolled out
+
+$ oc rollout history deployment/app-04
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+3         v1.1: updated page
+4         rebuild of v1.1 (no content change) - build app-04-3
+5         rebuild of v1.1 (no content change) - build app-04-4
+
+$ oc exec deploy/app-04 -- curl -s localhost:8080 | grep Version
+  <p>Version: 1.1</p>                                  ← same content, two extra rollouts
+```
+| Build | Content | Digest |
+|---|---|---|
+| app-04-1 | v1.0 | `sha256:6bada123…` |
+| app-04-2 | v1.1 | `sha256:d64696b7…` |
+| app-04-3 | v1.1 (unchanged) | `sha256:a6554595…` |
+| app-04-4 | v1.1 (unchanged) | `sha256:af72764b…` |
+
+**Why identical source gives a new digest:** OpenShift injects `ENV OPENSHIFT_BUILD_NAME="app-04-<n>"` and matching labels into every image (build steps 8–9), so each build's image config differs → new digest → the image-change trigger fires → a rollout, even though nothing changed.
+
 ## 7. Issues hit & observations
 | # | Observation | Explanation |
 |---|---|---|
@@ -102,13 +132,17 @@ $ curl -s http://$(oc get route app-04 -o jsonpath='{.spec.host}') | grep Versio
 | 3 | Route has **no TLS termination** | `oc expose` creates plain HTTP. Production routes should be `edge` or `reencrypt` TLS |
 | 5 | **3 revisions**, not 2 | Revision 1 is the Deployment as first created by `oc new-app`; the trigger then resolved the ImageStream tag into the image field (revision 2 = v1.0 – matching the "Waiting for deployment spec update to be observed" lines in OCP-007), and the rebuild produced revision 3 = v1.1 |
 | 6 | `CHANGE-CAUSE` is `<none>` for every revision | Nothing records *why* each rollout happened. Annotate it: `oc annotate deployment/app-04 kubernetes.io/change-cause="v1.1: updated page" --overwrite` – makes `rollout history` an audit trail |
+| 7 | Rebuilding **unchanged** source produced a **new digest and a rollout** – twice | Build metadata (`OPENSHIFT_BUILD_NAME`) differs per build. With `:latest` + an image-change trigger, every build redeploys – noisy, unnecessary rollouts in production |
+| 8 | `change-cause` set straight after `start-build` can land on the wrong revision | The trigger rollout and the annotation race. Reliable order: **build → `oc rollout status` → annotate** (verified with build app-04-4) |
+| 9 | Placeholder text (`<what changed>`, `...`) was pasted literally into change-cause twice | Fixed with `--overwrite`. Lesson: treat `<…>` / `...` in runbooks as must-replace; a literal placeholder in a label, host or password causes real incidents |
 | 4 | `--port=8080` needed on `oc expose` | The Service has two ports (8080, 8443 inherited from the base image – see OCP-007); without it the Route may target the wrong one |
 
 ## 8. Production considerations
 - Automatic redeploy on every build is great for **dev**; for **prod**, promote explicitly: tag a tested digest (`oc tag app-04@sha256:… app-04:prod`) and have only prod's Deployment follow `:prod`.
 - Add **readiness probes** so the rolling update only shifts traffic once the new Pod actually serves.
 - Use **TLS routes** (`oc create route edge …`) and, for public apps, a proper certificate.
-- Record a **change-cause** on each rollout so `oc rollout history` explains itself.
+- Record a **change-cause** on each rollout so `oc rollout history` explains itself – set it after `oc rollout status`, never with placeholder text.
+- **Build only when source changes** (Git webhook triggers) and promote by tag/digest, so rebuilds without changes don't cause rollouts.
 - Keep rollback simple: `oc rollout undo` works because the previous ReplicaSet still references the old digest.
 
 ## 9. Lessons learned
