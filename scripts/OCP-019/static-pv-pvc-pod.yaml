@@ -1,0 +1,47 @@
+# OCP-019 – static NFS PersistentVolume pre-bound to one PVC, mounted by a Pod
+# Replace <namespace>, <nfs-server> and <export-path>. PV names are cluster-wide – keep them unique.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-do180-<namespace>
+  labels: { owner: <namespace>, purpose: do180 }
+spec:
+  capacity: { storage: 1Gi }               # used for matching only – NFS does NOT enforce it
+  accessModes: [ ReadWriteMany ]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""                     # static: no StorageClass
+  claimRef:                                # reserve this PV for one specific PVC
+    namespace: <namespace>
+    name: pvc-do180
+  nfs:
+    server: <nfs-server>
+    path: <export-path>
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-do180
+  labels: { purpose: do180 }
+spec:
+  accessModes: [ ReadWriteMany ]
+  resources: { requests: { storage: 1Gi } }
+  storageClassName: ""                     # stop the default StorageClass from provisioning a new volume
+  volumeName: pv-do180-<namespace>         # bind to this exact PV
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-pod
+  labels: { purpose: do180 }
+spec:
+  securityContext: { runAsNonRoot: true, seccompProfile: { type: RuntimeDefault } }
+  containers:
+  - name: app
+    image: registry.access.redhat.com/ubi9/ubi-minimal
+    command: ["/bin/sh", "-c", "sleep infinity"]
+    securityContext: { allowPrivilegeEscalation: false, capabilities: { drop: ["ALL"] } }
+    resources: { requests: { cpu: 10m, memory: 16Mi }, limits: { cpu: 50m, memory: 32Mi } }
+    volumeMounts: [ { name: data, mountPath: /data } ]
+  volumes:
+  - name: data
+    persistentVolumeClaim: { claimName: pvc-do180 }
