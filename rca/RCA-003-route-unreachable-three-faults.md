@@ -21,7 +21,7 @@ The Etherpad application in `project-03` could not be opened in a browser via it
 ## 3. Symptoms & detection
 A read-only sweep of all training projects' Routes showed four broken ones, all with malformed hostnames:
 ```
-project-01  app1.app.ns-test.<lab-domain>                    HTTP 000
+project-01  app1.app.<cluster>.<lab-domain>                    HTTP 000
 project-02  app2.app.nstest.<lab-domain>                     HTTP 000
 project-03  app4.aps.nstest.cloud-llab.<lab-domain-typo>     HTTP 000     ← chosen (unassigned, most faults)
 project-04  app4.aps.nstest.<lab-domain-typo>                HTTP 000
