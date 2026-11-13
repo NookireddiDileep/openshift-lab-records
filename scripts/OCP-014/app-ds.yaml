@@ -1,0 +1,50 @@
+# OCP-014 – DaemonSet: one "node agent" Pod per eligible node, node name via Downward API
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: app-ds
+  labels:
+    app: app-ds
+spec:
+  selector:
+    matchLabels:
+      app: app-ds
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: app-ds
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: agent
+        image: registry.access.redhat.com/ubi9/ubi-minimal
+        command: ["/bin/sh", "-c"]
+        args:
+        - while true; do echo "$(date -u +%H:%M:%S) agent alive on node=$NODE_NAME pod=$POD_NAME"; sleep 30; done
+        env:
+        - name: NODE_NAME
+          valueFrom: { fieldRef: { fieldPath: spec.nodeName } }
+        - name: POD_NAME
+          valueFrom: { fieldRef: { fieldPath: metadata.name } }
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+        resources:
+          requests: { cpu: 10m, memory: 16Mi }
+          limits:   { cpu: 50m, memory: 32Mi }
+# To run only on worker nodes, add under template.spec:
+#   nodeSelector:
+#     node-role.kubernetes.io/worker: ""
+# To also run on tainted control-plane nodes, add a toleration:
+#   tolerations:
+#   - key: node-role.kubernetes.io/master
+#     operator: Exists
+#     effect: NoSchedule

@@ -26,6 +26,7 @@ commands, evidence, and lessons learned.
 | [OCP-011](stories/OCP-011-mysql-database-from-docker-image.md) | MySQL from a Docker image – Secret, SQL proof, durability test | Stateful apps · Secrets | Done |
 | [OCP-012](stories/OCP-012-mysql-from-openshift-template.md) | MySQL from an OpenShift Template – PVC, probes, data survives | Templates · Storage | Done |
 | [OCP-013](stories/OCP-013-copy-data-pod-to-local.md) | Copy data Pod → local: oc cp, oc rsync, DB backup + restore drill | Data movement · Backup | Done |
+| [OCP-014](stories/OCP-014-daemonset-deployment.md) | Application deployment using a DaemonSet – one Pod per node | DaemonSets · Scheduling | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
