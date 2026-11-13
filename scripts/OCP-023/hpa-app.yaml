@@ -1,0 +1,34 @@
+# OCP-023 – app + HPA: min 2, max 5, scale on 60% CPU (of request)
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: hpa-app, labels: { app: hpa-app } }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: hpa-app } }
+  template:
+    metadata: { labels: { app: hpa-app } }
+    spec:
+      securityContext: { runAsNonRoot: true, seccompProfile: { type: RuntimeDefault } }
+      containers:
+      - name: web
+        image: registry.access.redhat.com/ubi9/httpd-24
+        ports: [ { containerPort: 8080 } ]
+        securityContext: { allowPrivilegeEscalation: false, capabilities: { drop: ["ALL"] } }
+        resources:
+          requests: { cpu: 50m, memory: 64Mi }     # HPA % is relative to this request – required
+          limits:   { cpu: 200m, memory: 128Mi }
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: { name: hpa-app }
+spec:
+  scaleTargetRef: { apiVersion: apps/v1, kind: Deployment, name: hpa-app }
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target: { type: Utilization, averageUtilization: 60 }
+  # behavior:                                    # defaults shown for reference
+  #   scaleDown: { stabilizationWindowSeconds: 300 }

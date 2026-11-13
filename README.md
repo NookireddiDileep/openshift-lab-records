@@ -35,6 +35,7 @@ commands, evidence, and lessons learned.
 | [OCP-020](stories/OCP-020-dynamic-storage-etherpad.md) | Allocate 1Gi dynamic storage to an app – Etherpad data now survives restarts | Storage · Dynamic provisioning | Done |
 | [OCP-021](stories/OCP-021-message-survives-restarts.md) | Required message survives Pod deletes/restarts – ConfigMap (+ RCA-004) | ConfigMaps · SCC | Done |
 | [OCP-022](stories/OCP-022-statefulset-3-replicas.md) | StatefulSet, 3 replicas, 1Gi RWO PVC each (default StorageClass) | StatefulSets · Storage | Done |
+| [OCP-023](stories/OCP-023-hpa-cpu-autoscaling.md) | HPA min 2 / max 5 at 60% CPU – load test, scale up and down | Autoscaling · HPA | Done |
 
 ### RCAs (incidents / break-fix)
 | ID | Title | Severity | Root cause |
