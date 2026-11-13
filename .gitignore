@@ -1,0 +1,14 @@
+# never commit secrets or cluster access
+*kubeconfig*
+*.kubeconfig
+*.pem
+*.key
+*.crt
+.env
+*.htpasswd
+secrets/
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.obsidian/workspace*.json
