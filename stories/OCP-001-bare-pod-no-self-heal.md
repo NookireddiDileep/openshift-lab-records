@@ -108,7 +108,9 @@ $ oc get ns my-apps --show-labels
 ... pod-security.kubernetes.io/audit=restricted, pod-security.kubernetes.io/warn=restricted   # no "enforce" label
 
 $ oc auth can-i use scc/anyuid --as=system:serviceaccount:my-apps:default -n my-apps
-no
+no                                           # my project's default SA cannot use anyuid
+$ oc auth can-i use scc/anyuid
+yes                                          # but my user can (member of a lab admin group)
 
 $ oc apply -f app-01-pod-hardened.yaml --dry-run=server
 pod/app-01 created (server dry run)          # no PodSecurity warning
@@ -130,12 +132,13 @@ pod "app-01" deleted
 |---|---|---|---|
 | 1 | `oc new-project` → `AlreadyExists` | Command re-run after the project had already been created | None – `oc project -q` confirmed I was in the right project |
 | 2 | **Pod Security warnings** on apply: `allowPrivilegeEscalation != false`, `unrestricted capabilities`, `runAsNonRoot != true`, `seccompProfile` not set | Namespace labels are `warn=restricted` and `audit=restricted` with **no `enforce` label** – violations are warned and audited, not blocked. My manifest didn't declare a `securityContext` | Hardened manifest [`app-01-pod-hardened.yaml`](../scripts/OCP-001/app-01-pod-hardened.yaml) – **validated: no warnings, admitted under `restricted-v2`** (see §6b) |
-| 3 | First Pod admitted with **SCC `anyuid`**; the hardened Pod got **`restricted-v2`** | `anyuid` is broadly available on this shared lab (via RBAC to the `default` SA of many tenant projects and to admin groups). My own project's `default` SA **cannot** use it (`oc auth can-i ... → no`), so the first Pod got `anyuid` through the **requesting user's** permissions – a bare Pod is created by the user directly, so the user's SCC access counts. Once the spec was already restricted-compliant, `restricted-v2` admitted it | Lesson: SCC selection depends on **who creates the Pod** (user vs. controller's service account) and on the Pod spec. In production, grant `anyuid` only to a dedicated SA, never broadly |
+| 3 | First Pod admitted with **SCC `anyuid`**; the hardened Pod got **`restricted-v2`** | `anyuid` is broadly available on this shared lab (via RBAC to the `default` SA of many tenant projects and to admin groups). My own project's `default` SA **cannot** use it (`oc auth can-i ... → no`), so the first Pod got `anyuid` through the **requesting user's** permissions – **confirmed:** my user is a member of a lab admin group that can use `anyuid` (`oc auth can-i use scc/anyuid → yes`). A bare Pod is created by the user directly, so the user's SCC access counts. Once the spec was already restricted-compliant, `restricted-v2` admitted it | Lesson: SCC selection depends on **who creates the Pod** (user vs. controller's service account) and on the Pod spec. In production, grant `anyuid` only to a dedicated SA, never broadly |
 | 4 | Pod scheduled on a **control-plane node** (`master-0`) | Lab is a compact cluster where control-plane nodes are also schedulable workers | None for lab; in production keep app workloads off control-plane nodes |
 
 ## 8. Production considerations
 - Use a **Deployment** (or StatefulSet) for anything that must stay up – bare Pods are for debugging only.
 - Always declare a **restricted-compliant `securityContext`** so the Pod is secure regardless of which SCC admits it.
+- Trainee/tenant users should not be cluster-admin-like: on this shared lab every user is in an admin group, so any bare Pod they create can run with a fixed UID. In production, keep users on least privilege.
 - Don't grant `anyuid` broadly; grant it to a dedicated service account (`oc adm policy add-scc-to-user anyuid -z <sa>`) only when an image genuinely needs a fixed UID.
 - Always set **requests/limits** – they drive scheduling and QoS.
 
