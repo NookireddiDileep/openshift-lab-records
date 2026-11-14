@@ -45,10 +45,16 @@ commands, evidence, and lessons learned.
 | [RCA-003](rca/RCA-003-route-unreachable-three-faults.md) | App unreachable via Route – three config faults | Sev2 | Route host typo + Route→wrong Service name + Service selector ≠ Pod labels |
 | [RCA-004](rca/RCA-004-image-tag-and-root-only-httpd.md) | Wrong image tag, then CrashLoopBackOff | Sev3 | Case-sensitive tag `V2.0.0` vs `v2.0.0`; root-only httpd under random-UID restricted-v2 |
 
+### Scenario banks (practice backlog)
+| Bank | Scenarios |
+|---|---|
+| [DO180 – real-world problem statements](scenarios/DO180-RCA-scenario-bank.md) | 77 break-fix scenarios across Ch 1–7, each to become an RCA |
+
 ## Structure
 ```
 stories/     Jira-style tasks: requirement → plan → implementation → validation
 rca/         Incident write-ups: problem → impact → timeline → root cause → fix → prevention
+scenarios/   Problem-statement banks per course (RCA backlog)
 scripts/     Reusable scripts/manifests created during the labs
 templates/   Blank templates used for every record
 ```
