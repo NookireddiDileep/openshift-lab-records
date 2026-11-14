@@ -3,7 +3,7 @@
 # usage: ./switch.sh <bg-green|bg-blue>
 set -euo pipefail
 TARGET=${1:?target service: bg-green or bg-blue}
-ROUTE=bg
+ROUTE="bg"
 LIVE=$(oc get route "$ROUTE" -o jsonpath='{.spec.host}')
 CURRENT=$(oc get route "$ROUTE" -o jsonpath='{.spec.to.name}')
 [ "$CURRENT" = "$TARGET" ] && { echo "already live on $TARGET"; exit 0; }
@@ -23,4 +23,4 @@ oc patch route "$ROUTE" --type=merge -p "{\"spec\":{\"to\":{\"name\":\"$TARGET\"
 echo "switched $ROUTE: $CURRENT -> $TARGET (rollback: $0 $CURRENT)"
 
 # 4) verify (router reloads every ~5 s)
-for i in $(seq 1 10); do curl -s -m 2 "http://$LIVE/" | grep -o '<h1>.*</h1>'; sleep 1; done | sort | uniq -c
+for _ in $(seq 1 10); do curl -s -m 2 "http://$LIVE/" | grep -o '<h1>.*</h1>'; sleep 1; done | sort | uniq -c
