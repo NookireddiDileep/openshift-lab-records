@@ -8,6 +8,15 @@ commands, evidence, and lessons learned.
 > All hostnames, IPs, URLs, usernames and tokens are **sanitised**.
 > These are my own write-ups – not Red Hat course material.
 
+## ⭐ Start here (5-minute tour)
+
+| Read this | Why it's worth your time |
+|---|---|
+| [RCA-003 – App unreachable via Route, three faults](rca/RCA-003-route-unreachable-three-faults.md) | Layered troubleshooting: Route host → Service name → selector/labels, found one at a time |
+| [RCA-004 – Wrong tag, then CrashLoopBackOff](rca/RCA-004-image-tag-and-root-only-httpd.md) | Why root-only images break under OpenShift's random-UID `restricted-v2` SCC |
+| [OCP-017](stories/OCP-017-blue-green-deployment.md) / [OCP-018](stories/OCP-018-traffic-split-canary.md) – Blue-green & canary | Zero-error cutover, instant rollback and 80/20 weighted Routes |
+| [OCP-023 – HPA under load](stories/OCP-023-hpa-cpu-autoscaling.md) | Autoscaling proven with a load test, scale-up and scale-down |
+
 ## Index
 
 ### Stories (planned work)
