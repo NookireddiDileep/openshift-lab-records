@@ -1,0 +1,33 @@
+name: lint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run shellcheck on all Bash scripts
+        run: |
+          files=$(git ls-files '*.sh')
+          if [ -z "$files" ]; then echo "No .sh files yet"; exit 0; fi
+          shellcheck --severity=warning $files
+
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check relative links in Markdown files
+        shell: bash
+        run: |
+          : > /tmp/broken
+          while IFS= read -r f; do
+            dir=$(dirname "$f")
+            grep -oE '\]\([^)#]+' "$f" | sed 's/^](//' | grep -vE '^(https?:|mailto:)' | while IFS= read -r link; do
+              [ -e "$dir/$link" ] || echo "BROKEN: $f -> $link" | tee -a /tmp/broken
+            done
+          done < <(git ls-files '*.md')
+          if [ -s /tmp/broken ]; then exit 1; fi
+          echo "All relative links OK"
