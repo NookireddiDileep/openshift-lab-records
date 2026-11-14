@@ -14,7 +14,7 @@ CURRENT=$(oc get route "$ROUTE" -o jsonpath='{.spec.to.name}')
 # 2) smoke-test the target through its own test route (wait out the router reload interval)
 TEST_HOST=$(oc get route "${TARGET}-test" -o jsonpath='{.spec.host}' 2>/dev/null || true)
 if [ -n "$TEST_HOST" ]; then
-  for i in $(seq 1 10); do curl -sf -m 2 "http://$TEST_HOST/" >/dev/null && break; sleep 1; done
+  for _ in $(seq 1 10); do curl -sf -m 2 "http://$TEST_HOST/" >/dev/null && break; sleep 1; done
   curl -sf -m 2 "http://$TEST_HOST/" >/dev/null || { echo "smoke test failed on $TEST_HOST"; exit 1; }
 fi
 
