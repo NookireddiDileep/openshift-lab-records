@@ -50,10 +50,16 @@ commands, evidence, and lessons learned.
 |---|---|
 | [DO180 – real-world problem statements](scenarios/DO180-RCA-scenario-bank.md) | 77 break-fix scenarios across Ch 1–7, each to become an RCA |
 
+### Reference
+| Doc | What |
+|---|---|
+| [oc command bank](reference/oc-command-bank.md) | ~170 `oc` commands grouped by task – purpose and when to use each |
+
 ## Structure
 ```
 stories/     Jira-style tasks: requirement → plan → implementation → validation
 rca/         Incident write-ups: problem → impact → timeline → root cause → fix → prevention
+reference/   Command banks and cheat sheets
 scenarios/   Problem-statement banks per course (RCA backlog)
 scripts/     Reusable scripts/manifests created during the labs
 templates/   Blank templates used for every record
