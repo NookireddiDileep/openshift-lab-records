@@ -8,4 +8,4 @@ oc set route-backends "$ROUTE" "v1-app=$W1" "v2-app=$W2"
 oc set route-backends "$ROUTE"
 sleep 7                                   # router RELOAD_INTERVAL is 5s (OCP-017)
 H=$(oc get route "$ROUTE" -o jsonpath='{.spec.host}')
-for i in $(seq 1 100); do curl -s -m 2 "http://$H/" | grep -o 'version [12]' || echo ERROR; done | sort | uniq -c
+for _ in $(seq 1 100); do curl -s -m 2 "http://$H/" | grep -o 'version [12]' || echo ERROR; done | sort | uniq -c
