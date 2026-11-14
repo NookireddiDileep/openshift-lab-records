@@ -25,7 +25,7 @@ jobs:
           : > /tmp/broken
           while IFS= read -r f; do
             dir=$(dirname "$f")
-            grep -oE '\]\([^)#]+' "$f" | sed 's/^](//' | grep -vE '^(https?:|mailto:)' | while IFS= read -r link; do
+            { grep -oE '\]\([^)#]+' "$f" || true; } | sed 's/^](//' | { grep -vE '^(https?:|mailto:)' || true; } | while IFS= read -r link; do
               [ -e "$dir/$link" ] || echo "BROKEN: $f -> $link" | tee -a /tmp/broken
             done
           done < <(git ls-files '*.md')
