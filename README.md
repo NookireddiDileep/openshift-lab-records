@@ -54,6 +54,9 @@ commands, evidence, and lessons learned.
 | [RCA-003](rca/RCA-003-route-unreachable-three-faults.md) | App unreachable via Route – three config faults | Sev2 | Route host typo + Route→wrong Service name + Service selector ≠ Pod labels |
 | [RCA-004](rca/RCA-004-image-tag-and-root-only-httpd.md) | Wrong image tag, then CrashLoopBackOff | Sev3 | Case-sensitive tag `V2.0.0` vs `v2.0.0`; root-only httpd under random-UID restricted-v2 |
 
+### Break-fix runbooks (ready to run)
+A new one is added daily from the scenario bank. Each is a plan I run on my lab, and it graduates to an RCA once I've run it. See [runbooks/](runbooks/README.md).
+
 ### Scenario banks (practice backlog)
 | Bank | Scenarios |
 |---|---|
@@ -68,6 +71,7 @@ commands, evidence, and lessons learned.
 ```
 stories/     Jira-style tasks: requirement → plan → implementation → validation
 rca/         Incident write-ups: problem → impact → timeline → root cause → fix → prevention
+runbooks/    Ready-to-run break-fix plans (daily); each graduates to an RCA once run
 reference/   Command banks and cheat sheets
 scenarios/   Problem-statement banks per course (RCA backlog)
 scripts/     Reusable scripts/manifests created during the labs
