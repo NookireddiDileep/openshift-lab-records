@@ -66,6 +66,7 @@ A new one is added daily from the scenario bank. Each is a plan I run on my lab,
 | Doc | What |
 |---|---|
 | [oc command bank](reference/oc-command-bank.md) | ~170 `oc` commands grouped by task – purpose and when to use each |
+| [ARCH-001 – UPI reference architecture (15 hosts)](reference/ARCH-001-upi-15-host-reference-architecture.md) | Node roles (master/infra/storage/worker), bastion, HAProxy, bootstrap, DNS, install flow, moving router/registry/monitoring to infra nodes |
 
 ## Structure
 ```
