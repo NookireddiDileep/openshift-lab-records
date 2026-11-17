@@ -77,7 +77,7 @@ Each one becomes an **RCA** in [`rca/`](../rca/), written with the [RCA template
 
 | # | Problem statement (as reported) | What you'll see | Likely root cause(s) | Lab | Status |
 |---|---|---|---|---|---|
-| S42 | "The pod won't start after a config change." | `CreateContainerConfigError` | ConfigMap/Secret or a key missing (name typo) | 🟢 | |
+| S42 | "The pod won't start after a config change." | `CreateContainerConfigError` | ConfigMap/Secret or a key missing (name typo) | 🟢 | 📋 Runbook → [RB-S42](../runbooks/RB-S42-createcontainerconfigerror-missing-configmap-key.md) |
 | S43 | "The ConfigMap was updated but the app still uses the old value." | Old value in `env` | Env vars are read only at start → `oc rollout restart` (mounted files do update) | 🟢 | |
 | S44 | "DB login fails with the 'correct' password from the Secret." | Auth error | Double base64 encoding, or a trailing newline (`echo` vs `echo -n`) | 🟢 | |
 | S45 | "A mounted config file wiped the other files in the directory." | App can't find its default files | ConfigMap mounted over the whole directory → use `subPath` | 🟢 | |
