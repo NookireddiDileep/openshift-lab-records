@@ -96,7 +96,7 @@ Each one becomes an **RCA** in [`rca/`](../rca/), written with the [RCA template
 
 | # | Problem statement (as reported) | What you'll see | Likely root cause(s) | Lab | Status |
 |---|---|---|---|---|---|
-| S56 | "A Java app restarts forever right after deploy." | Liveness failures before startup completes | No startupProbe / `initialDelaySeconds` too short | 🟢 | |
+| S56 | "A Java app restarts forever right after deploy." | Liveness failures before startup completes | No startupProbe / `initialDelaySeconds` too short | 🟢 | 📋 Runbook → [RB-S56](../runbooks/RB-S56-liveness-probe-kills-slow-starting-app.md) |
 | S57 | "During a DB outage, all frontend pods restarted too." | Mass restarts | Liveness probe checks a dependency → it should check only the process itself | 🟢 | |
 | S58 | "Pods are Running but 0/1 Ready and the route gives 503." | Readiness failing | Wrong probe path or port | 🟢 | |
 | S59 | "The new pod has been Pending for 20 minutes." | `Insufficient cpu/memory` | Requests larger than free capacity on any node | 🟢 | |
