@@ -82,3 +82,13 @@ templates/   Blank templates used for every record
 ## Skills covered
 OpenShift administration · RBAC & authentication · networking & routes · storage ·
 operators · troubleshooting · upgrades · automation (Bash / Ansible / Python)
+
+## Related repositories
+
+Part of one hands-on platform-engineering portfolio. Start at my [GitHub profile](https://github.com/NookireddiDileep) for the overview.
+
+| Repo | What's there |
+|---|---|
+| [kubernetes-labs](https://github.com/NookireddiDileep/kubernetes-labs) | Upstream Kubernetes on a K3s cluster I built myself: 13 labs, 9 break-and-fix scenarios, timed incident drills |
+| [infra-automation-lab](https://github.com/NookireddiDileep/infra-automation-lab) | One real ops scenario a day, solved in Bash, Ansible, Python and Go against the same golden tests |
+| [project-arohan-ai](https://github.com/NookireddiDileep/project-arohan-ai) | AI infrastructure track: Linux internals, OpenShift vs Kubernetes, GPU scheduling, inference reliability, Prometheus SLOs |
