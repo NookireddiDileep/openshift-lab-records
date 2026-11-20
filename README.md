@@ -4,7 +4,7 @@ Hands-on OpenShift / Kubernetes work, written up the way it's done in production
 **Jira-style stories** (planned work) and **RCAs** (incidents / break-fix), each with
 commands, evidence, and lessons learned.
 
-> Lab environment: multi-node OpenShift 4.x training cluster.
+> Lab environment: multi-node OpenShift 4.x lab cluster.
 > All hostnames, IPs, URLs, usernames and tokens are **sanitised**.
 > These are my own write-ups – not Red Hat course material.
 
