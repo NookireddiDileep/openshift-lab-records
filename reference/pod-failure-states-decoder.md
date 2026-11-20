@@ -116,6 +116,8 @@ oc describe rs <rs-name> | grep -A5 Events      # look for FailedCreate
 
 **L4 angle:** *"A deployment shows 0/3 and there are no pods. Where do you look?"* → "Pods are created by the ReplicaSet, so I describe the ReplicaSet. `FailedCreate` there means admission rejected them: quota, SCC or a webhook. The pod never existed, so there are no pod events to read."
 
+Upstream Kubernetes evidence (K3s, `kubectl`): [Lab 11 namespaces and quotas](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-11-namespaces/README.md) in kubernetes-labs.
+
 ---
 
 ## 5. Pending
@@ -147,6 +149,8 @@ The `FailedScheduling` message is a per-node tally of **why** each node was reje
 - *"How do you prevent this at scale?"* → "Capacity alerts on requested vs allocatable, ClusterAutoscaler/MachineAutoscaler where possible, quotas per team, and request right-sizing reviews."
 
 Related: [OCP-022](../stories/OCP-022-statefulset-3-replicas.md) (per-pod PVCs), [OCP-019](../stories/OCP-019-static-pv-pvc-nfs.md) (PV/PVC binding).
+
+Upstream Kubernetes evidence (K3s, `kubectl`): [Scenario 03 Pending pod](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/scenario-03-pending-pod/README.md), [Scenario 07 PVC Pending](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/scenario-07-persistent-volume/README.md) in kubernetes-labs.
 
 ---
 
@@ -191,6 +195,8 @@ Related: [OCP-020](../stories/OCP-020-dynamic-storage-etherpad.md).
 
 Related: [RCA-004](../rca/RCA-004-image-tag-and-root-only-httpd.md) (wrong image tag).
 
+Upstream Kubernetes evidence (K3s, `kubectl`): [Scenario 02 ImagePullBackOff](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/scenario-02-imagepullbackoff/README.md) in kubernetes-labs.
+
 ---
 
 ## 8. CreateContainerConfigError / CreateContainerError
@@ -213,6 +219,8 @@ oc get configmap app-config -o yaml
 **L4 angle:** *"A config change went out and only new pods fail with CreateContainerConfigError; old pods are fine. Why?"* → "Old pods already read their env vars at start. The change removed or renamed a key, so only new pods, which resolve the reference at creation, fail. Fix the key, and add a check in CI that every referenced key exists."
 
 Related: [RB-S42](../runbooks/RB-S42-createcontainerconfigerror-missing-configmap-key.md).
+
+Upstream Kubernetes evidence (K3s, `kubectl`): [Scenario 04 ConfigMap](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/scenario-04-configmap/README.md), [Scenario 05 Secret](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/scenario-05-secret/README.md) in kubernetes-labs.
 
 ---
 
@@ -273,6 +281,8 @@ oc debug pod/<pod>                          # same, from a single pod's spec
 
 Related: [RCA-004](../rca/RCA-004-image-tag-and-root-only-httpd.md) (root-only httpd), [OCP-004](../stories/OCP-004-third-party-image-etherpad.md), [OCP-006](../stories/OCP-006-exec-without-login.md) (random UID), [RB-S56](../runbooks/RB-S56-liveness-probe-kills-slow-starting-app.md), [RB-S57](../runbooks/RB-S57-liveness-probe-checks-dependency.md) (liveness probes).
 
+Upstream Kubernetes evidence (K3s, `kubectl`): [Scenario 01 CrashLoopBackOff](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/scenario-01-crashloop/README.md), [Scenario 06 probe failures](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/scenario-06-liveness-readiness/README.md) in kubernetes-labs.
+
 ---
 
 ## 11. OOMKilled
@@ -300,6 +310,8 @@ oc adm top pod <pod> --containers                   # live usage
 - *"Exit 137 always means OOM?"* → "No. 137 is SIGKILL. OOM is one source; a liveness-probe kill after the grace period or a manual kill also gives 137. The `OOMKilled` reason is the proof."
 - *"Requests vs limits for memory?"* → "Request = what the scheduler reserves; limit = hard cap that triggers OOM. For critical workloads set request = limit (Guaranteed QoS) so they're last to be evicted and never overcommitted."
 
+Upstream Kubernetes evidence (K3s, `kubectl`): [Lab 07 requests and limits](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-07-resource-management/README.md), [Scenario 09 OOMKilled](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/scenario-09-resource-limits/README.md) in kubernetes-labs.
+
 ---
 
 ## 12. Running but not Ready (0/1)
@@ -325,6 +337,8 @@ oc get endpointslices -l kubernetes.io/service-name=<svc>
 
 Related: [RCA-003](../rca/RCA-003-route-unreachable-three-faults.md), [OCP-015](../stories/OCP-015-fix-app-unreachable-via-route.md).
 
+Upstream Kubernetes evidence (K3s, `kubectl`): [Lab 08 health checks](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-08-health-checks/README.md), [Scenario 06 probe failures](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/scenario-06-liveness-readiness/README.md) in kubernetes-labs.
+
 ---
 
 ## 13. Error / Completed (exit codes)
@@ -335,6 +349,8 @@ Related: [RCA-003](../rca/RCA-003-route-unreachable-three-faults.md), [OCP-015](
 - For **Deployments** (`restartPolicy: Always`), any exit leads to restart and eventually `CrashLoopBackOff`.
 
 Read the exit code with [§17](#17-exit-code-cheat-sheet), then `oc logs <pod>` (Job pods stay around until cleaned up).
+
+Upstream Kubernetes evidence (K3s, `kubectl`): [Lab 09 Jobs and CronJobs](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-09-jobs-cronjobs/README.md) in kubernetes-labs.
 
 ---
 
@@ -439,4 +455,4 @@ Answer each in under two minutes using [the 5-step method](#3-the-universal-5-st
 
 **What makes an answer L4 rather than L2:** you name the **component** that owns the step (scheduler, kubelet, CRI-O, admission, CSI, kernel), explain **why** it behaves that way, mention the **risk** of the obvious fix (force delete, `anyuid`, raising limits blindly), and finish with **prevention** at platform level (policy, alert, template, capacity).
 
-See also: [oc command bank](oc-command-bank.md) · [CRI-O container runtime](cri-o-container-runtime.md) · [OpenShift vs Kubernetes architecture](openshift-vs-kubernetes-architecture.md)
+See also: [Upstream translation and scenario map in kubernetes-labs](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/labs/lab-13-production-troubleshooting/README.md#upstream-kubernetes-translation-of-the-pod-failure-states-decoder) · [oc command bank](oc-command-bank.md) · [CRI-O container runtime](cri-o-container-runtime.md) · [OpenShift vs Kubernetes architecture](openshift-vs-kubernetes-architecture.md)
