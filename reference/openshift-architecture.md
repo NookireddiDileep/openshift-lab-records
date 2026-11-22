@@ -284,7 +284,7 @@ oc rsh -n openshift-etcd etcd-<node>  etcdctl endpoint health --cluster
 oc rsh -n openshift-etcd etcd-<node>  etcdctl endpoint status -w table
 ```
 
-Backup and restore are covered in **Backup and Disaster Recovery**.
+Quorum in depth (failure scenarios, leader election, recovery): [etcd quorum explained](etcd-quorum.md). Backup and restore are covered in **Backup and Disaster Recovery**.
 
 ---
 
@@ -2763,6 +2763,7 @@ The stories, RCAs and runbooks in this repo are where each part of this document
 # 📖 Related Documentation
 
 - [OpenShift vs Kubernetes architecture](openshift-vs-kubernetes-architecture.md) – side-by-side comparison, kubectl vs oc
+- [etcd quorum explained](etcd-quorum.md) – quorum, Raft, failure scenarios and recovery
 - [oc command bank](oc-command-bank.md) – ~170 commands grouped by task
 - [CRI-O container runtime](cri-o-container-runtime.md) – runtime internals and `crictl`
 - [Container runtimes overview](container-runtimes-overview.md) – runtimes by layer

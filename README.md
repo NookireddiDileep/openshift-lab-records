@@ -66,6 +66,7 @@ A new one is added daily from the scenario bank. Each is a plan I run on my lab,
 | Doc | What |
 |---|---|
 | [OpenShift architecture](reference/openshift-architecture.md) | End-to-end OpenShift 4 from scratch: control plane, operators, nodes; workloads, builds, networking, storage, security, MachineConfig, upgrades, install, backup; troubleshooting workflow, glossary, 50+ interview Q&As |
+| [etcd quorum explained](reference/etcd-quorum.md) | Quorum from scratch: Raft leader/writes, quorum table, losing 1 vs 2 members, split brain, OpenShift guard rails, recovery paths, 10 interview Q&As |
 | [oc command bank](reference/oc-command-bank.md) | ~170 `oc` commands grouped by task – purpose and when to use each |
 | [OpenShift vs Kubernetes architecture](reference/openshift-vs-kubernetes-architecture.md) · [PDF](reference/pdf/OpenShift-vs-Kubernetes-Architecture.pdf) | Layer-by-layer comparison, kubectl vs oc, 10 interview Q&As, labs |
 | [OpenShift admin learning path](reference/openshift-admin-learning-path.md) | DO180 vs DO280 vs DO380: what each covers, exams, order, specialisations |
