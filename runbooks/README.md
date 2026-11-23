@@ -9,5 +9,6 @@ Each runbook is a **plan for my lab**: how to break it safely, the triage path, 
 | Runbook | Scenario | Area | Lab | Status |
 |---|---|---|---|---|
 | [RB-S42](RB-S42-createcontainerconfigerror-missing-configmap-key.md) | [S42](../scenarios/DO180-RCA-scenario-bank.md) – pod won't start after a config change (`CreateContainerConfigError`) | Configuration (Ch 5) | 🟢 | 📋 |
+| [RB-S43](RB-S43-configmap-updated-app-still-old-value.md) | [S43](../scenarios/DO180-RCA-scenario-bank.md) – ConfigMap updated but the app still uses the old value (env vars are read only at start) | Configuration (Ch 5) | 🟢 | 📋 |
 | [RB-S56](RB-S56-liveness-probe-kills-slow-starting-app.md) | [S56](../scenarios/DO180-RCA-scenario-bank.md) – app restarts forever right after deploy (liveness probe kills a slow starter) | Probes (Ch 6) | 🟢 | 📋 |
 | [RB-S57](RB-S57-liveness-probe-checks-dependency.md) | [S57](../scenarios/DO180-RCA-scenario-bank.md) – during a DB outage all frontend pods restarted too (liveness probe checks a dependency) | Probes (Ch 6) | 🟢 | 📋 |
