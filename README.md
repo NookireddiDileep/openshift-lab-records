@@ -62,6 +62,9 @@ A new one is added daily from the scenario bank. Each is a plan I run on my lab,
 |---|---|
 | [DO180 – real-world problem statements](scenarios/DO180-RCA-scenario-bank.md) | 77 break-fix scenarios across Ch 1–7, each to become an RCA |
 
+### GitOps labs (OpenShift GitOps / Argo CD)
+Step-by-step labs from first install to multi-cluster delivery: Argo CD, Kustomize, Helm, GitHub Actions, ApplicationSets, ACM/ACS. See [gitops/](gitops/README.md).
+
 ### Reference
 | Doc | What |
 |---|---|
@@ -83,6 +86,7 @@ reference/   Command banks and cheat sheets
 scenarios/   Problem-statement banks per course (RCA backlog)
 scripts/     Reusable scripts/manifests created during the labs
 templates/   Blank templates used for every record
+gitops/      GitOps labs: Argo CD manifests and step-by-step guides
 ```
 
 ## Skills covered
