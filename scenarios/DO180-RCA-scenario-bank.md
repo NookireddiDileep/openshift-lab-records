@@ -79,7 +79,7 @@ Each one becomes an **RCA** in [`rca/`](../rca/), written with the [RCA template
 |---|---|---|---|---|---|
 | S42 | "The pod won't start after a config change." | `CreateContainerConfigError` | ConfigMap/Secret or a key missing (name typo) | 🟢 | 📋 Runbook → [RB-S42](../runbooks/RB-S42-createcontainerconfigerror-missing-configmap-key.md) |
 | S43 | "The ConfigMap was updated but the app still uses the old value." | Old value in `env` | Env vars are read only at start → `oc rollout restart` (mounted files do update) | 🟢 | 📋 Runbook → [RB-S43](../runbooks/RB-S43-configmap-updated-app-still-old-value.md) |
-| S44 | "DB login fails with the 'correct' password from the Secret." | Auth error | Double base64 encoding, or a trailing newline (`echo` vs `echo -n`) | 🟢 | |
+| S44 | "DB login fails with the 'correct' password from the Secret." | Auth error | Double base64 encoding, or a trailing newline (`echo` vs `echo -n`) | 🟢 | 📋 Runbook → [RB-S44](../runbooks/RB-S44-secret-password-newline-or-double-base64.md) |
 | S45 | "A mounted config file wiped the other files in the directory." | App can't find its default files | ConfigMap mounted over the whole directory → use `subPath` | 🟢 | |
 | S46 | "PVC stuck in Pending." | `no persistent volumes available` / no SC | No default StorageClass, SC name typo | 🟢 | |
 | S47 | "PVC Pending with an RWX request." | Provisioner error | SC doesn't support ReadWriteMany | 🟡 | |
