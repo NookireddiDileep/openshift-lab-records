@@ -69,6 +69,7 @@ Step-by-step labs from first install to multi-cluster delivery: Argo CD, Kustomi
 | ID | Article | What |
 |---|---|---|
 | [CE-001](core-engineering/CE-001-what-kubernetes-and-openshift-solve.md) | What Kubernetes and OpenShift actually solve | Control loops; 11 real operational problems with mechanism and limits; plain-words layer for beginners; troubleshooting checklist |
+| [CE-002](core-engineering/CE-002-day-in-the-life-openshift-platform-engineer.md) | A day in the life of an OpenShift platform engineer | Ownership, daily/monthly/quarterly work, health-check commands, 7 production incidents, safe changes, what makes it senior |
 
 ### Reference
 | Doc | What |
