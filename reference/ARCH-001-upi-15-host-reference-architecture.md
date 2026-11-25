@@ -10,6 +10,8 @@
 > **Honesty note:** this is a common enterprise layout that I studied and documented. It is **not** a cluster I operated in production.
 > All names, domains and IPs are generic placeholders (`ocp.example.com`, `192.0.2.x`). No employer or customer details.
 
+> **Related:** generic install/bootstrap flow → [OpenShift architecture – Installation and Bootstrap Flow](openshift-architecture.md#-installation-and-bootstrap-flow) · why 3 masters → [etcd quorum explained](etcd-quorum.md). This doc covers one concrete 15-host UPI layout.
+
 ---
 
 ## 1. Host inventory
