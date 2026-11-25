@@ -5,11 +5,8 @@ tags: [openshift, platform-engineering, day-2-operations, core-engineering]
 
 # CE-002 – A day in the life of an OpenShift platform engineer
 
-> **Status:** living article, extended as new findings come from labs and real incidents.
->
-> **Core engineering series:** first-principles articles: the problem, the mechanism,
-> where it breaks, and how to prove it. Read [CE-001](CE-001-what-kubernetes-and-openshift-solve.md)
-> first for the control-loop idea this article builds on.
+> **Core engineering series · CE-002.** A living article, extended as new findings come in.
+> It builds on the control-loop idea from [CE-001](CE-001-what-kubernetes-and-openshift-solve.md).
 
 ---
 
@@ -31,7 +28,7 @@ the API, Git and change records, not by logging in to servers.
 | Layer | Day-to-day responsibility |
 |---|---|
 | Cluster lifecycle | Installs, upgrades, update channel, node OS changes through MachineConfigs |
-| Control plane | etcd health and backups, API server, certificates ([etcd quorum](../reference/etcd-quorum.md)) |
+| Control plane | etcd health and backups, API server, certificates |
 | Nodes and capacity | Adding and replacing nodes (MachineSets), autoscaling, resource headroom |
 | Networking | Ingress routers, DNS, OVN-Kubernetes, egress, load balancers (MetalLB), NetworkPolicy standards |
 | Storage | StorageClasses, CSI drivers, ODF/Ceph, snapshots, PVC issues |
@@ -98,17 +95,14 @@ or a dashboard, and to alert on it, instead of retyping it every morning.
 | Upgrade stuck | `oc get clusterversion`, `oc get co`, `oc get mcp`, the message on the operator that is Progressing | A PodDisruptionBudget blocking a node drain, a Degraded MachineConfigPool, an incompatible Operator |
 | MachineConfigPool Degraded | `oc describe mcp`; machine-config-daemon logs for that node | A bad MachineConfig, or a file changed by hand on the node |
 | etcd slow or degraded | etcd operator status; fsync and leader-change alerts | Slow disk, a member down, too many objects (events, secrets) |
-| Ingress or Route outage | Router pods, ingress operator, DNS, the external load balancer | Router pods on an unhealthy node, an expired certificate, DNS ([RCA-003](../rca/RCA-003-route-unreachable-three-faults.md) shows the app-side version) |
+| Ingress or Route outage | Router pods, ingress operator, DNS, the external load balancer | Router pods on an unhealthy node, an expired certificate, DNS |
 | Mass pod evictions | Node conditions (MemoryPressure, DiskPressure); `oc adm top nodes` | Nodes overcommitted because requests are far below real usage |
 | Certificate expiry | `oc get co`; dates on API and ingress certificates | Custom certificates not rotated (the platform rotates its own internal ones) |
-
-For any single failing pod, the [pod failure states decoder](../reference/pod-failure-states-decoder.md)
-covers every state down to its mechanism.
 
 **The incident routine:**
 1. **Stabilise first:** restore service (cordon a bad node, scale away, roll back), then investigate.
 2. **Communicate:** one channel, regular updates, a clear owner.
-3. **Find the cause:** which control loop isn't converging (CE-001, section 4).
+3. **Find the cause:** which control loop isn't converging (CE-001, "A practical troubleshooting lens").
 4. **Write the RCA:** timeline, root cause, fix, and the prevention that stops a repeat.
 
 ---
@@ -121,7 +115,7 @@ Most outages come from changes, so change discipline is most of seniority:
 - **Know the blast radius.** A MachineConfig reboots every node in its pool, one at a time. A change to the default ingress controller affects every Route.
 - **Have a way back.** For upgrades that means a recent etcd backup and a tested restore; minor upgrades cannot be rolled back.
 - **Check capacity before draining.** One node out must still fit every workload, and PodDisruptionBudgets must allow the drain.
-- **Prefer Git over `oc edit`.** A change through GitOps is reviewed, recorded and repeatable ([GitOps labs](../gitops/README.md)).
+- **Prefer Git over `oc edit`.** A change through GitOps is reviewed, recorded and repeatable.
 
 ---
 
@@ -157,7 +151,7 @@ Most of the discipline carries over; the tools change.
 
 - Run the section 4 health check daily for a week and explain every non-green line.
 - Read `oc describe co <name>` and `oc describe mcp` until the conditions are familiar.
-- Write a runbook for each incident in section 5 before you ever meet it (see [runbooks/](../runbooks/README.md)).
+- Write a runbook for each incident in section 5 before you ever meet it.
 - On a cluster you own, break things on purpose: a bad MachineConfig, a blocked drain, an etcd backup and restore.
 
 ---
@@ -168,3 +162,17 @@ Most of the discipline carries over; the tools change.
 - **"How do you upgrade a production cluster?"** Read the release notes and update graph, check deprecated APIs and Operator compatibility, back up etcd, upgrade a test cluster, check PDBs and capacity, upgrade in a change window, watch `clusterversion`, operators and MachineConfigPools.
 - **"A node is NotReady. What do you do?"** Stabilise (cordon), check node conditions, kubelet and CRI-O logs through `oc debug node`, then disk, memory, certificates and network.
 - **"How do you keep 50 teams from hurting each other?"** Project templates with quotas, limit ranges and default NetworkPolicies; RBAC by group; SCC defaults; onboarding standards in Git.
+
+---
+
+## Hands-on evidence
+
+Related material in this repository:
+
+| Topic | Where |
+| --- | --- |
+| etcd and quorum, the control plane's most critical component | [etcd quorum explained](../reference/etcd-quorum.md) |
+| Every pod failure state, down to its mechanism | [Pod failure states decoder](../reference/pod-failure-states-decoder.md) |
+| A Route outage traced through three stacked faults | [RCA-003](../rca/RCA-003-route-unreachable-three-faults.md) |
+| Ready-to-run break-fix runbooks | [runbooks/](../runbooks/README.md) |
+| Cluster and app configuration through Git | [GitOps labs](../gitops/README.md) |
