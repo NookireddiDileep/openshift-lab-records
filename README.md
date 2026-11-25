@@ -76,6 +76,7 @@ Step-by-step labs from first install to multi-cluster delivery: Argo CD, Kustomi
 | [CRI-O container runtime](reference/cri-o-container-runtime.md) | CRI-O full form, where it sits, `crictl` commands, ContainerRuntimeConfig, common issues |
 | [Container runtimes overview](reference/container-runtimes-overview.md) | All runtime types by layer: engines, containerd/CRI-O, runc/crun, gVisor/Kata, GPU, Wasm, HPC; RuntimeClass |
 | [Pod failure states decoder](reference/pod-failure-states-decoder.md) | Every pod failure state from plain language to kernel/controller mechanism: Pending, ImagePullBackOff, CrashLoopBackOff, OOMKilled, Evicted, stuck Terminating…; 5-step method, exit codes, 15 L4 interview drills |
+| [ARCH-001 – UPI reference architecture (15 hosts)](reference/ARCH-001-upi-15-host-reference-architecture.md) | Node roles (master/infra/storage/worker), bastion, HAProxy, bootstrap, DNS, install flow, moving router/registry/monitoring to infra nodes |
 
 ## Structure
 ```
