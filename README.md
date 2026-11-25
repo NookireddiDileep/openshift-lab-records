@@ -65,6 +65,11 @@ A new one is added daily from the scenario bank. Each is a plan I run on my lab,
 ### GitOps labs (OpenShift GitOps / Argo CD)
 Step-by-step labs from first install to multi-cluster delivery: Argo CD, Kustomize, Helm, GitHub Actions, ApplicationSets, ACM/ACS. See [gitops/](gitops/README.md).
 
+### Core engineering (first-principles articles)
+| ID | Article | What |
+|---|---|---|
+| [CE-001](core-engineering/CE-001-what-kubernetes-and-openshift-solve.md) | What Kubernetes and OpenShift actually solve | Control loops; 11 real operational problems with mechanism and limits; plain-words layer for beginners; troubleshooting checklist |
+
 ### Reference
 | Doc | What |
 |---|---|
@@ -88,6 +93,7 @@ scenarios/   Problem-statement banks per course (RCA backlog)
 scripts/     Reusable scripts/manifests created during the labs
 templates/   Blank templates used for every record
 gitops/      GitOps labs: Argo CD manifests and step-by-step guides
+core-engineering/  First-principles articles: problem → mechanism → limits → proof (living)
 ```
 
 ## Skills covered
