@@ -13,7 +13,7 @@
 ## 1. User story / requirement
 > As an **application owner**, I can't open my application in a browser using its Route URL. **Check and fix the issues** so the application is reachable over the browser via its Route URL.
 
-Context: eight pre-built training projects (`project-01` … `project-08`), each with a broken application. Team members claim one project at a time in a group chat and fix it.
+Context: eight pre-built lab projects (`project-01` … `project-08`), each with a broken application. Each engineer claims one project at a time and fixes it.
 
 ## 2. Acceptance criteria
 - [x] Claimed an unassigned project before making changes
@@ -86,7 +86,7 @@ Browser:    Etherpad loads and opens a pad ("Not secure" – plain HTTP)
 | 3 | Two faults were hyphen vs. underscore | Kubernetes names can't contain `_`, but label **values** and a Route's `to.name` field accept any string – so the mismatch wasn't rejected at creation |
 | 4 | Kept the host as `app3`, not `app4` | Route hosts must be unique; `app4` belongs to `project-04` |
 | 5 | Browser shows "Not secure"; pad text warns about DirtyDB | Plain-HTTP route (add edge TLS); ephemeral data store (see [OCP-004](OCP-004-third-party-image-etherpad.md)) |
-| 6 | `project-06` / `project-07` were already healthy when checked | Reported back to the trainer in case faults were expected there |
+| 6 | `project-06` / `project-07` were already healthy when checked | Reported back to the cluster owner in case faults were expected there |
 
 ## 8. Production considerations
 - In a shared environment: **claim → back up → change → verify → report**. Never edit someone else's namespace.
@@ -100,4 +100,4 @@ Browser:    Etherpad loads and opens a pad ("Not secure" – plain HTTP)
 - Team coordination is part of the fix on shared infrastructure.
 
 ## 10. Interview talking point
-> "On a shared training cluster I claimed a broken project, confirmed it was really broken with a read-only sweep of all the routes, and triaged from the outside in. There were three faults: a misspelled hostname outside the wildcard DNS, a route pointing at a Service name that didn't exist, and a Service selector that didn't match the Pod labels. I backed up the objects, fixed them with two patches, and verified with curl and a browser – then reported back to the team. The full RCA has the five whys and preventive actions."
+> "On a shared lab cluster I claimed a broken project, confirmed it was really broken with a read-only sweep of all the routes, and triaged from the outside in. There were three faults: a misspelled hostname outside the wildcard DNS, a route pointing at a Service name that didn't exist, and a Service selector that didn't match the Pod labels. I backed up the objects, fixed them with two patches, and verified with curl and a browser – then reported back to the team. The full RCA has the five whys and preventive actions."

@@ -4,7 +4,7 @@
 - [ ] No IP addresses → use `10.0.0.x` / `192.0.2.x`
 - [ ] No usernames/passwords/tokens (`oc whoami -t`, htpasswd, secrets output)
 - [ ] No kubeconfig files
-- [ ] No trainer's lab names, Jira URLs or internal ticket numbers → use my own IDs (OCP-001, RCA-001)
+- [ ] No third-party lab names, Jira URLs or internal ticket numbers → use my own IDs (OCP-001, RCA-001)
 - [ ] No copied text from Red Hat course books – my own words only
 - [ ] No employer (T-Systems / customer) names, hosts or logs
 

@@ -1,0 +1,18 @@
+# Argo CD Application for Lab 1.
+# Starts with MANUAL sync on purpose (no syncPolicy). Step 10 of the lab turns on auto-sync.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-app-lab1
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io   # deleting the app also deletes what it deployed
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/NookireddiDileep/openshift-lab-records.git
+    targetRevision: main
+    path: gitops/apps/lab1-sample-app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitops-lab1

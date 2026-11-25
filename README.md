@@ -4,7 +4,7 @@ Hands-on OpenShift / Kubernetes work, written up the way it's done in production
 **Jira-style stories** (planned work) and **RCAs** (incidents / break-fix), each with
 commands, evidence, and lessons learned.
 
-> Lab environment: multi-node OpenShift 4.x training cluster.
+> Lab environment: multi-node OpenShift 4.x lab cluster.
 > All hostnames, IPs, URLs, usernames and tokens are **sanitised**.
 > These are my own write-ups – not Red Hat course material.
 
@@ -54,27 +54,52 @@ commands, evidence, and lessons learned.
 | [RCA-003](rca/RCA-003-route-unreachable-three-faults.md) | App unreachable via Route – three config faults | Sev2 | Route host typo + Route→wrong Service name + Service selector ≠ Pod labels |
 | [RCA-004](rca/RCA-004-image-tag-and-root-only-httpd.md) | Wrong image tag, then CrashLoopBackOff | Sev3 | Case-sensitive tag `V2.0.0` vs `v2.0.0`; root-only httpd under random-UID restricted-v2 |
 
+### Break-fix runbooks (ready to run)
+A new one is added daily from the scenario bank. Each is a plan I run on my lab, and it graduates to an RCA once I've run it. See [runbooks/](runbooks/README.md).
+
 ### Scenario banks (practice backlog)
 | Bank | Scenarios |
 |---|---|
 | [DO180 – real-world problem statements](scenarios/DO180-RCA-scenario-bank.md) | 77 break-fix scenarios across Ch 1–7, each to become an RCA |
 
+### GitOps labs (OpenShift GitOps / Argo CD)
+Step-by-step labs from first install to multi-cluster delivery: Argo CD, Kustomize, Helm, GitHub Actions, ApplicationSets, ACM/ACS. See [gitops/](gitops/README.md).
+
 ### Reference
 | Doc | What |
 |---|---|
+| [OpenShift architecture](reference/openshift-architecture.md) | End-to-end OpenShift 4 from scratch: control plane, operators, nodes; workloads, builds, networking, storage, security, MachineConfig, upgrades, install, backup; troubleshooting workflow, glossary, 50+ interview Q&As |
+| [etcd quorum explained](reference/etcd-quorum.md) | Quorum from scratch: Raft leader/writes, quorum table, losing 1 vs 2 members, split brain, OpenShift guard rails, recovery paths, 10 interview Q&As |
 | [oc command bank](reference/oc-command-bank.md) | ~170 `oc` commands grouped by task – purpose and when to use each |
+| [OpenShift vs Kubernetes architecture](reference/openshift-vs-kubernetes-architecture.md) · [PDF](reference/pdf/OpenShift-vs-Kubernetes-Architecture.pdf) | Layer-by-layer comparison, kubectl vs oc, 10 interview Q&As, labs |
+| [OpenShift admin learning path](reference/openshift-admin-learning-path.md) | DO180 vs DO280 vs DO380: what each covers, exams, order, specialisations |
+| [CRI-O container runtime](reference/cri-o-container-runtime.md) | CRI-O full form, where it sits, `crictl` commands, ContainerRuntimeConfig, common issues |
+| [Container runtimes overview](reference/container-runtimes-overview.md) | All runtime types by layer: engines, containerd/CRI-O, runc/crun, gVisor/Kata, GPU, Wasm, HPC; RuntimeClass |
+| [Pod failure states decoder](reference/pod-failure-states-decoder.md) | Every pod failure state from plain language to kernel/controller mechanism: Pending, ImagePullBackOff, CrashLoopBackOff, OOMKilled, Evicted, stuck Terminating…; 5-step method, exit codes, 15 L4 interview drills |
 | [ARCH-001 – UPI reference architecture (15 hosts)](reference/ARCH-001-upi-15-host-reference-architecture.md) | Node roles (master/infra/storage/worker), bastion, HAProxy, bootstrap, DNS, install flow, moving router/registry/monitoring to infra nodes |
 
 ## Structure
 ```
 stories/     Jira-style tasks: requirement → plan → implementation → validation
 rca/         Incident write-ups: problem → impact → timeline → root cause → fix → prevention
+runbooks/    Ready-to-run break-fix plans (daily); each graduates to an RCA once run
 reference/   Command banks and cheat sheets
 scenarios/   Problem-statement banks per course (RCA backlog)
 scripts/     Reusable scripts/manifests created during the labs
 templates/   Blank templates used for every record
+gitops/      GitOps labs: Argo CD manifests and step-by-step guides
 ```
 
 ## Skills covered
 OpenShift administration · RBAC & authentication · networking & routes · storage ·
 operators · troubleshooting · upgrades · automation (Bash / Ansible / Python)
+
+## Related repositories
+
+Part of one hands-on platform-engineering portfolio. Start at my [GitHub profile](https://github.com/NookireddiDileep) for the overview.
+
+| Repo | What's there |
+|---|---|
+| [kubernetes-labs](https://github.com/NookireddiDileep/kubernetes-labs) | Upstream Kubernetes on a K3s cluster I built myself: 13 labs, 9 break-and-fix scenarios, timed incident drills |
+| [infra-automation-lab](https://github.com/NookireddiDileep/infra-automation-lab) | One real ops scenario a day, solved in Bash, Ansible, Python and Go against the same golden tests |
+| [project-arohan-ai](https://github.com/NookireddiDileep/project-arohan-ai) | AI infrastructure track: Linux internals, OpenShift vs Kubernetes, GPU scheduling, inference reliability, Prometheus SLOs |

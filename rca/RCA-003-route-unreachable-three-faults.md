@@ -3,13 +3,12 @@
 | Field | Value |
 |---|---|
 | **Date** | 2026-11-13 |
-| **Environment** | Lab OpenShift 4.19, shared training cluster – assigned project `project-03` (sanitised) |
+| **Environment** | Lab OpenShift 4.19, shared multi-tenant lab cluster – assigned project `project-03` (sanitised) |
 | **Severity** | Sev2 in production terms (application fully unavailable to users) |
 | **Component** | Route · Service · Endpoints |
 | **Status** | **Resolved** – verified with curl and in a browser |
 | **Time to detect / resolve** | n/a (reported) / ~10 min triage + ~2 min fix |
 | **Story** | [OCP-015](../stories/OCP-015-fix-app-unreachable-via-route.md) |
-| **Source** | Trainer story 08: "Unable to access the application over the route URL – check and fix" |
 
 ## 1. Problem statement
 The Etherpad application in `project-03` could not be opened in a browser via its Route URL. The Pod itself was Running and healthy.
@@ -20,7 +19,7 @@ The Etherpad application in `project-03` could not be opened in a browser via it
 - On the shared cluster, the Route also claimed a hostname intended for another project (`app4`), risking a collision when that project was fixed.
 
 ## 3. Symptoms & detection
-A read-only sweep of all training projects' Routes showed four broken ones, all with malformed hostnames:
+A read-only sweep of all lab projects' Routes showed four broken ones, all with malformed hostnames:
 ```
 project-01  app1.app.<cluster>.<lab-domain>                    HTTP 000
 project-02  app2.app.nstest.<lab-domain>                     HTTP 000
@@ -33,7 +32,7 @@ project-05..08                                               HTTP 200
 ## 4. Timeline
 | Time (IST) | Event |
 |---|---|
-| 17:05 | Claimed a project in the team group; first pick (`project-06`) turned out already working |
+| 17:05 | Claimed a project; first pick (`project-06`) turned out already working |
 | 17:11 | Read-only sweep of all 8 Routes → projects 01–04 broken |
 | 17:12 | Claimed `project-03`; full read-only triage |
 | 17:13 | Backup of Service + Route taken; Service selector fixed → endpoints appeared |

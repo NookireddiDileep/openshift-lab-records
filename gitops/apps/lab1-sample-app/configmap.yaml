@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sample-app-html
+data:
+  index.html: |
+    <html>
+      <body>
+        <h1>GitOps Lab 1 - version 1</h1>
+        <p>Deployed by Argo CD from Git.</p>
+      </body>
+    </html>
