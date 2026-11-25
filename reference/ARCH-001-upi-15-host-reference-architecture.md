@@ -4,8 +4,8 @@
 |---|---|
 | Type | Reference architecture / study record |
 | Area | Installation (UPI) · Node roles · Load balancing · Day-2 placement |
-| Related course | DO322 (installation), DO280/DO380 (infra nodes, operators) |
-| Status | Studied. To be rebuilt hands-on in the training lab during DO322 |
+| Related Red Hat courses | DO322 (installation), DO280/DO380 (infra nodes, operators) |
+| Status | Studied reference design; hands-on rebuild planned (see section 8) |
 
 > **Honesty note:** this is a common enterprise layout that I studied and documented. It is **not** a cluster I operated in production.
 > All names, domains and IPs are generic placeholders (`ocp.example.com`, `192.0.2.x`). No employer or customer details.
@@ -231,10 +231,10 @@ oc get pods -n openshift-monitoring -o wide | grep -E 'prometheus-k8s|alertmanag
 
 ---
 
-## 8. Hands-on plan (training lab, during DO322)
+## 8. Hands-on plan
 
-- [ ] Draw this layout for the training cluster I actually use and note the differences
-- [ ] Read the HAProxy config on the training environment (if accessible) and map frontends to backends
+- [ ] Draw this layout for a real lab cluster and note the differences
+- [ ] Read a lab HAProxy config and map frontends to backends
 - [ ] Label and taint one node as infra; move the router there; verify with `-o wide`
 - [ ] Move the image registry and Prometheus; prove that no application pods land on infra nodes
 - [ ] Break-fix: remove the toleration from the IngressController → router pods Pending → write an RCA
