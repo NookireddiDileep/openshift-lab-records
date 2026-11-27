@@ -43,7 +43,7 @@ Each one becomes an **RCA** in [`rca/`](../rca/), written with the [RCA template
 | S15 | "The app crashes writing its cache: Permission denied on /var/app." | CrashLoopBackOff; log shows the write failing | Directory not group-writable for GID 0 → fix the image (`chgrp -R 0 && chmod -R g=u`) or mount a volume | 🟢 | |
 | S16 | "The pod restarts every few seconds and the logs are empty." | CrashLoopBackOff, exit code 0/1/127 | Wrong `command`/`args`; process exits right away (nothing long-running) | 🟢 | |
 | S17 | "The database pod keeps crashing right after deploy." | Logs: `You must specify one of MYSQL_...` | Required env vars or Secret missing | 🟢 | Seen in [OCP-011](../stories/OCP-011-mysql-database-from-docker-image.md) |
-| S18 | "The app dies under load with no error in the logs." | `OOMKilled`, exit code 137 in Last State | Memory limit lower than the app's working set (JVM heap vs limit) | 🟢 | |
+| S18 | "The app dies under load with no error in the logs." | `OOMKilled`, exit code 137 in Last State | Memory limit lower than the app's working set (JVM heap vs limit) | 🟢 | 📋 Runbook → [RB-S18](../runbooks/RB-S18-oomkilled-memory-limit-too-low.md) |
 | S19 | "The container crashes too fast to `oc rsh` into it." | CrashLoopBackOff | Debug technique: `oc debug deploy/x` starts a copy with a shell | 🟢 | |
 | S20 | "Someone deleted the pod and the app never came back." | Pod gone, nothing recreated | A bare Pod with no controller → use a Deployment | 🟢 | Seen in [OCP-001](../stories/OCP-001-bare-pod-no-self-heal.md) |
 | S21 | "The pod shows 1/2 Ready and `oc logs` shows nothing wrong." | Multi-container pod | Logs were read from the wrong container → `oc logs -c <sidecar>` | 🟢 | |

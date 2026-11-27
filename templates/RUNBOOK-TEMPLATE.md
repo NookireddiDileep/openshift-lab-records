@@ -21,3 +21,15 @@
 ## 9. Evidence to capture when I run it (for the RCA)
 ## 10. Interview: "Walk me through how you'd troubleshoot …" (a 60-second answer)
 ## 11. Clean up
+
+---
+
+## Optional support-case sections (use inside the sections above)
+
+Each runbook is also a mock support case. Add these *inside* the numbered sections, without removing any of them:
+
+- **In section 1 (ticket):** severity (Sev 1–4), environment (OCP version, platform, cluster size), symptom in the customer's words, business impact, what the customer already tried, and a **time box** (target time to root cause, usually 20–30 min).
+- **At the start of section 4: "Collect data first"** – a table of artifacts (`oc adm inspect ns/<project>`, `oc get co`, events, `oc logs --previous`, `oc debug node/<node>` + `chroot /host` + `journalctl -u kubelet` / `-u crio`, `oc adm must-gather`, `sos report`), what each one tells me and where to look inside it. Then the triage steps and a hypotheses table (how each is ruled in or out).
+- **In section 10: "2-minute case explanation"** – symptom → data collected → root cause → fix → prevention, spoken to a senior support engineer, plus 2 panel follow-up questions with short answers.
+- **In section 10: "Customer update"** – 3–4 lines to post on the case: what was found, what was done, next steps.
+- **"EX280 angle"** line in the header note, where the scenario maps to an exam objective.
