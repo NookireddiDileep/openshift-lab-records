@@ -14,9 +14,11 @@ commands, evidence, and lessons learned.
 |---|---|---|
 | **1. Know your goal** | [OpenShift career ladder: L1 to Architect](reference/openshift-career-ladder.md) | See the levels (L1 → L4 → architect), what each role does and which skills it needs, so you know where you are and what you are aiming for |
 | **2. Understand the platform** | [OpenShift architecture](reference/openshift-architecture.md) | How OpenShift is built end to end: control plane, operators, nodes, networking, storage, security, upgrades. Everything else in this repo builds on it |
-| **3. Then the core, by topic** | [Core engineering](core-engineering/README.md) → [Revise by category](#revise-by-category) | First-principles articles, then each topic's stories, hands-on drills, RCAs and reference notes in one place |
+| **3. Learn the core** | [CE-001 – What Kubernetes and OpenShift actually solve](core-engineering/CE-001-what-kubernetes-and-openshift-solve.md) | Control loops; 11 real operational problems with mechanism and limits; plain-words layer for beginners; troubleshooting checklist |
+| | [CE-002 – A day in the life of an OpenShift platform engineer](core-engineering/CE-002-day-in-the-life-openshift-platform-engineer.md) | Ownership, daily/monthly/quarterly work, health-check commands, 7 production incidents, safe changes, what makes it senior |
+| **4. Then practise by topic** | [Revise by category](#revise-by-category) | Each topic's stories, hands-on drills, RCAs and reference notes in one place |
 
-Once steps 1 and 2 are clear, the rest of the repo reads as practice and evidence for them.
+Once steps 1 to 3 are clear, the rest of the repo reads as practice and evidence for them.
 
 ## ⭐ Highlights (5-minute tour)
 
