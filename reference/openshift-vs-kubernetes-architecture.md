@@ -6,6 +6,13 @@ Nookireddi Dileep · 18 Nov 2026 · Based on OpenShift 4.x (DO280, OCP 4.18) and
 
 > **The one-line answer:** OpenShift is a certified Kubernetes distribution. The core is the same, but OpenShift makes the OS, networking, ingress, registry, monitoring and upgrades part of the platform, all managed by operators, and its security defaults are stricter (SCCs, non-root, SELinux).
 
+> **📘 Read these two first.** This page only *compares* the platforms. Each one is explained in full in its own deep dive:
+>
+> 1. **[Kubernetes architecture](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/ARCHITECTURE.md)** (kubernetes-labs): the engine. Control plane, worker nodes, API request flow, pods, Deployments, Services, DNS, probes, scheduling.
+> 2. **[OpenShift architecture](openshift-architecture.md)**: the finished car. The same engine plus operators, RHCOS, OVN-Kubernetes, Routes, SCCs, builds, MachineConfig, upgrades, install and day-2 operations.
+>
+> With both clear, this comparison takes ten minutes; without them, it is a list of names.
+
 ---
 
 ## 1. The story: a kit vs a finished car
@@ -28,6 +35,8 @@ So in an interview, never say "OpenShift is different from Kubernetes". Say "Ope
 
 ### 3.1 Control plane
 
+> Deep dive: [Kubernetes architecture – control plane components](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/ARCHITECTURE.md) · [OpenShift architecture – control plane components and the operator layer](openshift-architecture.md)
+
 | | Kubernetes | OpenShift |
 |---|---|---|
 | Core components | kube-apiserver, etcd, kube-scheduler, kube-controller-manager | Same four, each run and healed by its own operator |
@@ -41,6 +50,8 @@ The request path for `kubectl apply` / `oc apply` is **identical**: client → A
 
 ### 3.2 Platform management — "everything is an operator"
 
+> Deep dive: [OpenShift architecture – the operator layer (CVO, ClusterOperators, OLM)](openshift-architecture.md)
+
 This is the single biggest difference.
 
 - **Kubernetes:** you install with kubeadm (or a managed service), add-ons with Helm or manifests, and upgrade each piece yourself, in the right order.
@@ -50,6 +61,8 @@ This is the single biggest difference.
 - **Golden rule:** don't hand-edit what an operator owns — it will revert. Change the operator's config resource instead (e.g. `ingresscontroller`, `network.operator`, `config.imageregistry`).
 
 ### 3.3 Node OS — RHCOS and the Machine Config Operator
+
+> Deep dive: [OpenShift architecture – node components, MachineConfig and node update flow](openshift-architecture.md)
 
 - **Kubernetes:** any Linux distro; you patch and configure nodes with your own tools (SSH, Ansible, Puppet).
 - **OpenShift:** control plane nodes **must** run **Red Hat Enterprise Linux CoreOS (RHCOS)**, an image-based, mostly read-only OS; workers normally run it too. The OS version is part of the OpenShift release, so a cluster upgrade also upgrades the OS.
@@ -61,10 +74,14 @@ This is the single biggest difference.
 
 ### 3.4 Container runtime
 
+> Deep dive: [Kubernetes architecture – worker node components](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/ARCHITECTURE.md) · [CRI-O container runtime](cri-o-container-runtime.md)
+
 - **Kubernetes:** any CRI runtime; containerd is the most common.
 - **OpenShift:** **CRI-O** only — a lightweight runtime built just for Kubernetes, versioned in lock-step with it. Debugging tool on the node is `crictl` (no `docker` command). See [OCP-006 – CRI-O and the random UID](../stories/OCP-006-exec-without-login.md).
 
 ### 3.5 Networking and ingress
+
+> Deep dive: [Kubernetes architecture – Service networking and DNS](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/ARCHITECTURE.md) · [OpenShift architecture – OVN-Kubernetes, Routes, DNS, NetworkPolicy](openshift-architecture.md) · troubleshooting: [network path decoder](network-path-decoder.md)
 
 | | Kubernetes | OpenShift |
 |---|---|---|
@@ -79,6 +96,8 @@ This is the single biggest difference.
 Quick commands: `oc get route`, `oc expose svc/<name>`, `oc get ingresscontroller -n openshift-ingress-operator`, `oc get pods -n openshift-ingress`.
 
 ### 3.6 Security
+
+> Deep dive: [OpenShift architecture – authentication, RBAC, projects, SCCs, certificates](openshift-architecture.md)
 
 | | Kubernetes | OpenShift |
 |---|---|---|
@@ -187,5 +206,7 @@ Do destructive labs only on your own cluster, never on a shared training cluster
 4. CRI-O runtime, OVN-Kubernetes network, Routes via HAProxy router.
 5. Secure by default: SCCs, random non-root UIDs, SELinux enforcing, built-in OAuth.
 6. Batteries included: registry, builds, monitoring, console, OperatorHub, Machine API.
+
+**Go deeper:** [Kubernetes architecture](https://github.com/NookireddiDileep/kubernetes-labs/blob/main/01-kubernetes-foundation/ARCHITECTURE.md) · [OpenShift architecture](openshift-architecture.md)
 
 *Facts checked against OpenShift 4.x documentation concepts at time of writing; confirm version-specific details (e.g. supported OS for compute nodes) in the docs for the release you are interviewing on.*
