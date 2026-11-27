@@ -17,6 +17,23 @@ commands, evidence, and lessons learned.
 | [OCP-017](stories/OCP-017-blue-green-deployment.md) / [OCP-018](stories/OCP-018-traffic-split-canary.md) – Blue-green & canary | Zero-error cutover, instant rollback and 80/20 weighted Routes |
 | [OCP-023 – HPA under load](stories/OCP-023-hpa-cpu-autoscaling.md) | Autoscaling proven with a load test, scale-up and scale-down |
 
+## Revise by category
+
+Everything on one topic in one row: assigned stories, my own break-and-fix drills, incidents and runbooks, and reference notes. The **Course** column maps each topic to the Red Hat course where it is taught. Stories grouped by topic: [stories/README.md](stories/README.md).
+
+| Category | Stories | Drills | RCAs / runbooks | Reference | Course |
+|---|---|---|---|---|---|
+| **Workloads and self-healing** | [001](stories/OCP-001-bare-pod-no-self-heal.md) · [002](stories/OCP-002-deployment-self-heal.md) · [003](stories/OCP-003-scale-deployment.md) · [014](stories/OCP-014-daemonset-deployment.md) | — | — | [Pod failure states decoder](reference/pod-failure-states-decoder.md) | DO180 ch3–4 |
+| **Reliability: probes, limits, autoscaling** | [003](stories/OCP-003-scale-deployment.md) · [023](stories/OCP-023-hpa-cpu-autoscaling.md) | [ND-04](drills/networking/ND-04-failing-readiness-probe-rollout.md) | [RB-S18](runbooks/RB-S18-oomkilled-memory-limit-too-low.md) · [RB-S56](runbooks/RB-S56-liveness-probe-kills-slow-starting-app.md) · [RB-S57](runbooks/RB-S57-liveness-probe-checks-dependency.md) | [Pod failure states decoder](reference/pod-failure-states-decoder.md) | DO180 ch6 |
+| **Networking, Routes and traffic** | [008](stories/OCP-008-imagestream-trigger-and-route.md) · [015](stories/OCP-015-fix-app-unreachable-via-route.md) · [016](stories/OCP-016-ingress-default-controller.md) · [017](stories/OCP-017-blue-green-deployment.md) · [018](stories/OCP-018-traffic-split-canary.md) | [ND-01 to ND-06](drills/networking/README.md) | [RCA-003](rca/RCA-003-route-unreachable-three-faults.md) | [Network path decoder](reference/network-path-decoder.md) | DO180 ch4 · DO280 (NetworkPolicy, TLS) |
+| **Configuration: ConfigMaps and Secrets** | [021](stories/OCP-021-message-survives-restarts.md) | — | [RB-S42](runbooks/RB-S42-createcontainerconfigerror-missing-configmap-key.md) · [RB-S43](runbooks/RB-S43-configmap-updated-app-still-old-value.md) · [RB-S44](runbooks/RB-S44-secret-password-newline-or-double-base64.md) | — | DO180 ch5 |
+| **Storage and data** | [011](stories/OCP-011-mysql-database-from-docker-image.md) · [012](stories/OCP-012-mysql-from-openshift-template.md) · [013](stories/OCP-013-copy-data-pod-to-local.md) · [019](stories/OCP-019-static-pv-pvc-nfs.md) · [020](stories/OCP-020-dynamic-storage-etherpad.md) · [022](stories/OCP-022-statefulset-3-replicas.md) | next | [RCA-002](rca/RCA-002-mysql-data-loss-no-persistent-storage.md) | — | DO180 ch5 · DO280 |
+| **Images, builds and registries** | [004](stories/OCP-004-third-party-image-etherpad.md) · [005](stories/OCP-005-container-os-vs-node-kernel.md) · [007](stories/OCP-007-own-image-openshift-build.md) · [008](stories/OCP-008-imagestream-trigger-and-route.md) · [009](stories/OCP-009-copy-images-to-registry.md) · [010](stories/OCP-010-podman-build-push-internal-registry.md) | — | [RCA-001](rca/RCA-001-rootless-podman-subuid.md) · [RCA-004](rca/RCA-004-image-tag-and-root-only-httpd.md) | [Container runtimes](reference/container-runtimes-overview.md) · [CRI-O](reference/cri-o-container-runtime.md) | DO180 ch3, ch7 |
+| **Releases and rollouts** | [008](stories/OCP-008-imagestream-trigger-and-route.md) · [017](stories/OCP-017-blue-green-deployment.md) · [018](stories/OCP-018-traffic-split-canary.md) | [ND-04](drills/networking/ND-04-failing-readiness-probe-rollout.md) | — | — | DO180 ch7 |
+| **Security: SCCs and the random UID** | [004](stories/OCP-004-third-party-image-etherpad.md) · [006](stories/OCP-006-exec-without-login.md) · [021](stories/OCP-021-message-survives-restarts.md) | — | [RCA-004](rca/RCA-004-image-tag-and-root-only-httpd.md) | — | DO180 ch3 · DO280 |
+| **Platform and architecture** | — | — | — | [OpenShift architecture](reference/openshift-architecture.md) · [OpenShift vs Kubernetes](reference/openshift-vs-kubernetes-architecture.md) · [etcd quorum](reference/etcd-quorum.md) · [ARCH-001](reference/ARCH-001-upi-15-host-reference-architecture.md) · [CE-001](core-engineering/CE-001-what-kubernetes-and-openshift-solve.md) · [CE-002](core-engineering/CE-002-day-in-the-life-openshift-platform-engineer.md) | DO280 · DO380 |
+| **GitOps** | — | [GitOps labs](gitops/README.md) | — | — | DO380 |
+
 ## Index
 
 ### Stories (planned work)
@@ -65,6 +82,11 @@ A new one is added daily from the scenario bank. Each is a plan I run on my lab,
 ### GitOps labs (OpenShift GitOps / Argo CD)
 Step-by-step labs from first install to multi-cluster delivery: Argo CD, Kustomize, Helm, GitHub Actions, ApplicationSets, ACM/ACS. See [gitops/](gitops/README.md).
 
+### Network drills (break-and-fix, with RCA)
+| ID | Drill | What |
+|---|---|---|
+| [ND-00–06](drills/networking/README.md) | Six network drills on one app | Scale to zero, selector typo, wrong targetPort, failing readiness probe, deny-all NetworkPolicy, hostname typo: each with problem statement, minute-level timeline, real outputs and RCA |
+
 ### Core engineering (first-principles articles)
 | ID | Article | What |
 |---|---|---|
@@ -83,6 +105,7 @@ Step-by-step labs from first install to multi-cluster delivery: Argo CD, Kustomi
 | [CRI-O container runtime](reference/cri-o-container-runtime.md) | CRI-O full form, where it sits, `crictl` commands, ContainerRuntimeConfig, common issues |
 | [Container runtimes overview](reference/container-runtimes-overview.md) | All runtime types by layer: engines, containerd/CRI-O, runc/crun, gVisor/Kata, GPU, Wasm, HPC; RuntimeClass |
 | [Pod failure states decoder](reference/pod-failure-states-decoder.md) | Every pod failure state from plain language to kernel/controller mechanism: Pending, ImagePullBackOff, CrashLoopBackOff, OOMKilled, Evicted, stuck Terminating…; 5-step method, exit codes, 15 L4 interview drills |
+| [Network path decoder](reference/network-path-decoder.md) | "The app is unreachable": the request's journey from browser to pod, inside-vs-outside split, hop-by-hop method, symptom → layer (DNS, 503, 502, 504, refused, timeout, TLS), NetworkPolicy and egress traps, 12 L4 interview drills |
 | [ARCH-001 – UPI reference architecture (15 hosts)](reference/ARCH-001-upi-15-host-reference-architecture.md) | Node roles (master/infra/storage/worker), bastion, HAProxy, bootstrap, DNS, install flow, moving router/registry/monitoring to infra nodes |
 
 ## Structure
@@ -96,6 +119,7 @@ scripts/     Reusable scripts/manifests created during the labs
 templates/   Blank templates used for every record
 gitops/      GitOps labs: Argo CD manifests and step-by-step guides
 core-engineering/  First-principles articles: problem → mechanism → limits → proof (living)
+drills/            My own break-and-fix drills by category (networking/: ND-00 to ND-06)
 ```
 
 ## Skills covered
