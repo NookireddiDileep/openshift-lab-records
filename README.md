@@ -79,6 +79,7 @@ Step-by-step labs from first install to multi-cluster delivery: Argo CD, Kustomi
 | [oc command bank](reference/oc-command-bank.md) | ~170 `oc` commands grouped by task – purpose and when to use each |
 | [OpenShift vs Kubernetes architecture](reference/openshift-vs-kubernetes-architecture.md) · [PDF](reference/pdf/OpenShift-vs-Kubernetes-Architecture.pdf) | Layer-by-layer comparison, kubectl vs oc, 10 interview Q&As, labs |
 | [OpenShift admin learning path](reference/openshift-admin-learning-path.md) | DO180 vs DO280 vs DO380: what each covers, exams, order, specialisations |
+| [OpenShift career ladder: L1 to Architect](reference/openshift-career-ladder.md) | Roles, responsibilities and skills at L1, L2, L3, L4 and architect level; cloud/multi-cloud track; OpenShift 5 and where it is heading; full course path; Kubernetes certs; interviews, timeline, career tips |
 | [CRI-O container runtime](reference/cri-o-container-runtime.md) | CRI-O full form, where it sits, `crictl` commands, ContainerRuntimeConfig, common issues |
 | [Container runtimes overview](reference/container-runtimes-overview.md) | All runtime types by layer: engines, containerd/CRI-O, runc/crun, gVisor/Kata, GPU, Wasm, HPC; RuntimeClass |
 | [Pod failure states decoder](reference/pod-failure-states-decoder.md) | Every pod failure state from plain language to kernel/controller mechanism: Pending, ImagePullBackOff, CrashLoopBackOff, OOMKilled, Evicted, stuck Terminating…; 5-step method, exit codes, 15 L4 interview drills |
