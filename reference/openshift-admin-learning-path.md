@@ -15,6 +15,8 @@ The three courses are one track. Each assumes the previous one.
 
 At the time of writing, DO280 is based on OpenShift Container Platform **4.18**.
 
+For roles and responsibilities at each career level (L1 to architect), see the [OpenShift career ladder](openshift-career-ladder.md).
+
 ## Recommended order
 
 ```text
