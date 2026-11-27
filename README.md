@@ -14,6 +14,7 @@ commands, evidence, and lessons learned.
 |---|---|---|
 | **1. Know your goal** | [OpenShift career ladder: L1 to Architect](reference/openshift-career-ladder.md) | See the levels (L1 → L4 → architect), what each role does and which skills it needs, so you know where you are and what you are aiming for |
 | **2. Understand the platform** | [OpenShift architecture](reference/openshift-architecture.md) | How OpenShift is built end to end: control plane, operators, nodes, networking, storage, security, upgrades. Everything else in this repo builds on it |
+| | [OpenShift quick reference](reference/openshift-quick-reference.md) | 176 terms A to Z, one line each with the `oc` command to see it. Keep it open while you read, for any unfamiliar word |
 | **3. Learn the core** | [CE-001 – What Kubernetes and OpenShift actually solve](core-engineering/CE-001-what-kubernetes-and-openshift-solve.md) | Control loops; 11 real operational problems with mechanism and limits; plain-words layer for beginners; troubleshooting checklist |
 | | [CE-002 – A day in the life of an OpenShift platform engineer](core-engineering/CE-002-day-in-the-life-openshift-platform-engineer.md) | Ownership, daily/monthly/quarterly work, health-check commands, 7 production incidents, safe changes, what makes it senior |
 | **4. Then practise by topic** | [Revise by category](#revise-by-category) | Each topic's stories, hands-on drills, RCAs and reference notes in one place |
@@ -108,6 +109,7 @@ Step-by-step labs from first install to multi-cluster delivery: Argo CD, Kustomi
 ### Reference
 | Doc | What |
 |---|---|
+| [OpenShift quick reference](reference/openshift-quick-reference.md) | 176 terms A to Z, one line each: meaning, the `oc` command to see it, and its area |
 | [OpenShift architecture](reference/openshift-architecture.md) | End-to-end OpenShift 4 from scratch: control plane, operators, nodes; workloads, builds, networking, storage, security, MachineConfig, upgrades, install, backup; troubleshooting workflow, glossary, 50+ interview Q&As |
 | [etcd quorum explained](reference/etcd-quorum.md) | Quorum from scratch: Raft leader/writes, quorum table, losing 1 vs 2 members, split brain, OpenShift guard rails, recovery paths, 10 interview Q&As |
 | [oc command bank](reference/oc-command-bank.md) | ~170 `oc` commands grouped by task – purpose and when to use each |
