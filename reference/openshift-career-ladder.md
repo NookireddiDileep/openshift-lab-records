@@ -234,9 +234,12 @@ OpenShift is Kubernetes plus enterprise extras (routes, SCCs, OAuth, operators, 
 | Kubernetes certification (CNCF) | What it proves | Best time on the OpenShift ladder |
 | --- | --- | --- |
 | KCNA | Cloud-native and Kubernetes concepts | Optional, before or during DO180 |
+| KCSA | Kubernetes and cloud-native security concepts (multiple choice) | Optional, before CKS; a concept-level start on security |
 | CKAD | Building and running apps on Kubernetes | Optional, useful for L1–L2 and app-facing roles |
 | CKA | Kubernetes cluster administration | L2, after EX280; opens roles on EKS, AKS, GKE and vanilla Kubernetes |
-| CKS | Kubernetes security | L3, after CKA; pairs with ACS and platform security work |
+| CKS | Kubernetes security | L3; requires a current CKA; pairs with ACS and platform security work |
+
+**Kubestronaut:** CNCF's title for holding all five Kubernetes certifications (KCNA, KCSA, CKAD, CKA, CKS), all valid at the same time. A long-term badge, not a requirement for OpenShift roles: CKA (and later CKS) matter most on this ladder. See [CNCF Kubestronaut FAQ](https://www.cncf.io/training/kubestronaut/kubestronaut-faq/).
 
 **Tip:** DO180 and DO280 already teach most of the Kubernetes needed for CKA. Practising on plain Kubernetes as well (kind, K3s or kubeadm) shows what OpenShift adds and what it does for you, which interviewers often ask about.
 
