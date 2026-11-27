@@ -8,7 +8,17 @@ commands, evidence, and lessons learned.
 > All hostnames, IPs, URLs, usernames and tokens are **sanitised**.
 > These are my own write-ups – not Red Hat course material.
 
-## ⭐ Start here (5-minute tour)
+## 🧭 New to OpenShift? Read in this order
+
+| Step | Read | Why first |
+|---|---|---|
+| **1. Know your goal** | [OpenShift career ladder: L1 to Architect](reference/openshift-career-ladder.md) | See the levels (L1 → L4 → architect), what each role does and which skills it needs, so you know where you are and what you are aiming for |
+| **2. Understand the platform** | [OpenShift architecture](reference/openshift-architecture.md) | How OpenShift is built end to end: control plane, operators, nodes, networking, storage, security, upgrades. Everything else in this repo builds on it |
+| **3. Then the core, by topic** | [Core engineering](core-engineering/README.md) → [Revise by category](#revise-by-category) | First-principles articles, then each topic's stories, hands-on drills, RCAs and reference notes in one place |
+
+Once steps 1 and 2 are clear, the rest of the repo reads as practice and evidence for them.
+
+## ⭐ Highlights (5-minute tour)
 
 | Read this | Why it's worth your time |
 |---|---|
